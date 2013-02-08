@@ -1,0 +1,13 @@
+{
+  "name": "jscomplexity",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index"
+  },
+  "dependencies" : {
+      "complexity-report"   : ">=0.7.0",
+      "walk"                : ">=2.2.1",
+      "handlebars"          : ">=1.0.8"
+  }
+}

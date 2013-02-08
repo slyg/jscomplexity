@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <title>JS Complexity Report</title>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/graphael/0.5.0/g.raphael-min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/graphael/0.5.0/g.dot-min.js"></script>
+    </head>
+    <body>
+        <div id="holder" style="height: 650px; width: 2100px;"></div>
+        <script>
+                
+            var r = Raphael("holder"),
+                xs      = [{{#foreach item}}{{lineNumber}}{{#if $notlast}},{{/if}} {{/foreach}}],
+                ys      = [{{#foreach item}}{{complexity}}{{#if $notlast}},{{/if}} {{/foreach}}],
+                heat    = [{{#foreach item}}{{lineNumber}}{{#if $notlast}},{{/if}} {{/foreach}}],
+                ref     = [{{#foreach item}}"{{path}}"{{#if $notlast}},{{/if}} {{/foreach}}]
+            ;
+            
+            var index = ref.length - 1;
+                
+            r.dotchart(0, -10, 1100, 650, xs, ys, heat, {
+                symbol: "o", 
+                max: 20, 
+                heat: true, 
+                axis: "0 0 1 1"
+            }).hover(function(){
+                
+                var markerLabel = this.label;
+                this.marker = 
+                    this.marker || 
+                    r
+                        .tag(this.x, this.y, markerLabel, 0, this.r + 2)
+                        .insertBefore(this);
+                this.marker.show();
+                
+                
+            }, function(){
+            
+                this.marker && this.marker.hide();
+                
+            }).each(function(){
+                
+                this.index = index--;
+                this.label = this.value + '\n' + ref[this.index];
+            
+            });
+        
+        </script>
+    </body>
+</html>
