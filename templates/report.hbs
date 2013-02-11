@@ -1,50 +1,140 @@
 <html>
     <head>
         <title>JS Complexity Report</title>
+        <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap-combined.min.css" rel="stylesheet">
         <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/graphael/0.5.0/g.raphael-min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/graphael/0.5.0/g.dot-min.js"></script>
+        <style type="text/css">
+            #container {width: 960px; margin: 0 auto; font-size: 12px; padding: 20px 0;}
+            #path {height: 30px; padding: 10px 15px;}
+            
+            .graph-holder {position: relative; margin-bottom: 20px;}
+                .graph-holder div {height: 300px; width: 100%;}
+                .labely {position: absolute; top: 30px; left: -75px; -webkit-transform: rotate(-90deg); -webkit-transform-origin: right bottom;}
+                .labelx {width: 300px; position: absolute; bottom: -12px; right: 88px; text-align: right;}
+        </style>
     </head>
     <body>
-        <div id="holder" style="height: 650px; width: 2100px;"></div>
-        <script>
-                
-            var r = Raphael("holder"),
-                xs      = [{{#foreach item}}{{lineNumber}}{{#if $notlast}},{{/if}} {{/foreach}}],
-                ys      = [{{#foreach item}}{{complexity}}{{#if $notlast}},{{/if}} {{/foreach}}],
-                heat    = [{{#foreach item}}{{lineNumber}}{{#if $notlast}},{{/if}} {{/foreach}}],
-                ref     = [{{#foreach item}}"{{path}}"{{#if $notlast}},{{/if}} {{/foreach}}]
-            ;
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand" href="#">JS Complexity</a>
+                    <ul class="nav pull-right">
+                        <li>
+                            <form class="navbar-search pull-left" action="">
+                                <input id="path" type="text" class="search-query span8" placeholder="File path" />
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="container">
+            <div class="graph-holder">
+                <h5>Difficulty/Complexity (heat is Line number)</h5>
+                <span class="labely">Complexity</span>
+                <span class="labelx">Difficulty</span>
+                <div id="first-holder"></div>
+            </div>
+            <div class="graph-holder">
+                <h5>Line number/Complexity (heat is Difficulty)</h5>
+                <span class="labely">Complexity</span>
+                <span class="labelx">Line number</span>
+                <div id="second-holder"></div>
+            </div>
+            <div class="graph-holder">
+                <h5>Line number/Difficulty (heat is Complexity)</h5>
+                <span class="labely">Difficulty</span>
+                <span class="labelx">Line number</span>
+                <div id="third-holder"></div>
+            </div>
+            <script>
+                    
+                // datas & references  
+                var 
+                    pathHolder  = document.getElementById("path"),
+                    
+                    difficulty  = [{{#foreach item}}{{halstead.difficulty}}{{#if $notlast}},{{/if}} {{/foreach}}],
+                    complexity  = [{{#foreach item}}{{complexity}}{{#if $notlast}},{{/if}} {{/foreach}}],
+                    lineNum     = [{{#foreach item}}{{lineNumber}}{{#if $notlast}},{{/if}} {{/foreach}}],
+                    
+                    ref         = [{{#foreach item}}"{{path}}"{{#if $notlast}},{{/if}} {{/foreach}}],
+                    
+                    posx        = 0,
+                    posy        = -10,
+                    width       = 900,
+                    height      = 300,
+                    opt         = {
+                        symbol  : "o",
+                        max     : 10,
+                        heat    : true,
+                        axis    : "0 0 1 1"
+                    }
+                ;
             
-            var index = ref.length - 1;
+                // remove value if displayed by browser
+                pathHolder.value = "";
                 
-            r.dotchart(0, -10, 1100, 650, xs, ys, heat, {
-                symbol: "o", 
-                max: 20, 
-                heat: true, 
-                axis: "0 0 1 1"
-            }).hover(function(){
+                // first graph
+                new Graph({
+                    holder : "first-holder",
+                    xs : difficulty,
+                    ys : complexity,
+                    heat : lineNum
+                });
                 
-                var markerLabel = this.label;
-                this.marker = 
-                    this.marker || 
+                // second graph
+                new Graph({
+                    holder : "second-holder",
+                    xs : lineNum,
+                    ys : complexity,
+                    heat : difficulty
+                });
+                
+                // third graph
+                new Graph({
+                    holder : "third-holder",
+                    xs : lineNum,
+                    ys : difficulty,
+                    heat : complexity
+                });
+                
+                
+                
+                
+                // Graph builder
+                function Graph(){
+                    var options = arguments[0];             
+                    var
+                        r = Raphael(options.holder),
+                        index = ref.length - 1,
+                        xs = options.xs,
+                        ys = options.ys,
+                        heat = options.heat
+                    ;
                     r
-                        .tag(this.x, this.y, markerLabel, 0, this.r + 2)
-                        .insertBefore(this);
-                this.marker.show();
-                
-                
-            }, function(){
+                        .dotchart(posx, posy, width, height, xs, ys, heat, opt)
+                        .hover(function(){
+                            var markerLabel = this.label;
+                            this.marker = 
+                                this.marker || 
+                                r
+                                    .tag(this.x, this.y, markerLabel, 0, this.r + 2)
+                                    .insertBefore(this);
+                            this.marker.show();
+                        }, function(){
+                            this.marker && this.marker.hide();
+                        }).each(function(){
+                            this.index = index--;
+                            this.label = this.value;
+                        }).click(function(){
+                            pathHolder.value = ref[this.index];
+                        })
+                    ;
+                }
             
-                this.marker && this.marker.hide();
-                
-            }).each(function(){
-                
-                this.index = index--;
-                this.label = this.value + '\n' + ref[this.index];
-            
-            });
-        
-        </script>
+            </script>
+        </div>
     </body>
 </html>
