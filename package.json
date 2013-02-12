@@ -1,9 +1,9 @@
 {
   "name": "jscomplexity",
   "version": "0.0.1",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index"
+  "preferGlobal" : "true",
+  "bin": {
+    "jscr": "generate-report.js"
   },
   "dependencies" : {
       "complexity-report"   : ">=0.7.0",
