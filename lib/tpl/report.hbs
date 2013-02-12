@@ -59,7 +59,7 @@
                     complexity  = [{{#foreach item}}{{complexity}}{{#if $notlast}},{{/if}} {{/foreach}}],
                     lineNum     = [{{#foreach item}}{{lineNumber}}{{#if $notlast}},{{/if}} {{/foreach}}],
                     
-                    ref         = [{{#foreach item}}"{{path}}"{{#if $notlast}},{{/if}} {{/foreach}}],
+                    ref         = [{{#foreach item}}"{{escapedPath}}"{{#if $notlast}},{{/if}} {{/foreach}}],
                     
                     posx        = 0,
                     posy        = -10,
