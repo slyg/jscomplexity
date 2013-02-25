@@ -7,7 +7,7 @@
         output = require('./utils/output')
     ;
     
-    crawlComplexity(srcDir, function(report){ output(report, outputDir); });
+    crawlComplexity(srcDir, function(err, report){ if(!err) output(report, outputDir); });
     
     
     

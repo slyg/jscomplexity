@@ -44,7 +44,8 @@
                 } else { next(); }
                 
             })
-            .on("end", function() { cb(reportList); })
+            .on("error", function(){ cb(err); })
+            .on("end", function(){ cb(null, reportList); })
         ;
     
     }
