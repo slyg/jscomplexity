@@ -3,7 +3,7 @@ var
     handlebars = require('handlebars')
 ;
 
-handlebars.registerHelper("foreach",function(arr,options) {
+handlebars.registerHelper("foreach",function(arr, options) {
     if(options.inverse && !arr.length)
         return options.inverse(this);
 
