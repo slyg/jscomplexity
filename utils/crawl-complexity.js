@@ -17,6 +17,7 @@
             .on("file", function (root, fileStats, next) {
             
                 var fileRef = require('path').normalize(root + "/" + fileStats.name);
+                console.log(fileRef);
                 
                 if( (/\.(js)$/i).test(fileRef) ) {
                     
