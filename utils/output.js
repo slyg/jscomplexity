@@ -15,7 +15,6 @@ module.exports = function(data, dirPath){
     
     fs.writeFile(reportFilePath, result, function(err) {
         if(err) throw new Error(err);
-        console.log("saved at " + reportFilePath);
     });
     
 }
