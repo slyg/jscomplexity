@@ -1,7 +1,7 @@
-module.exports = function(srcDir, cb){
+module.exports = function(srcDir){
 
     var crawlComplexity = require('./utils/crawl-complexity');
-    
-    crawlComplexity(srcDir, function(err, report){ cb(err, report); });
+
+    return crawlComplexity(srcDir);
     
 }

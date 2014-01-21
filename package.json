@@ -1,13 +1,17 @@
 {
   "name": "jscomplexity",
-  "version": "0.0.11",
-  "preferGlobal" : "true",
+  "version": "0.0.12",
+  "preferGlobal": "true",
   "bin": {
     "jscr": "generate-report.js"
   },
-  "dependencies" : {
-      "complexity-report"   : ">=0.7.0",
-      "walk"                : ">=2.2.1",
-      "handlebars"          : ">=1.0.8"
+  "dependencies": {
+    "walk": "~2.2.1",
+    "handlebars": "~1.0.8",
+    "bluebird": "~1.0.0",
+    "escomplex": "~0.2.2",
+    "complexity-report": "~1.0.2",
+    "escomplex-ast-moz": "~0.1.5",
+    "esprima": "~1.0.4"
   }
 }
