@@ -6,8 +6,10 @@
         outputDir = process.argv[3],
         output = require('./utils/output')
     ;
-    
-    crawlComplexity(srcDir, function(err, report){ if(!err) output(report, outputDir); });
+
+    crawlComplexity(srcDir).then(function(report){
+    	output(report, outputDir);
+    }).caught(console.log);
     
     
     
