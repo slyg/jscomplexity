@@ -3,8 +3,6 @@
 
 Command-line tool to generate a complexity report on file tree Javascript files. It is based on [escomplex](https://github.com/philbooth/escomplex/) module results. Report stands in a .html file containing graphical representation of file tree when used from command-line.
 
-:warning: Linux/OSX compliant only (I haven't tested it on Windows).
-
 
 ###Installation 
 
@@ -25,3 +23,5 @@ var jscr = require('jscomplexity');
 // jscr() returns a promise (using bluebird)
 jscr('/path/to/js/dir').then(console.log);
 ```
+
+:warning: Linux/OSX compliant only (I haven't tested it on Windows).
