@@ -13,19 +13,17 @@ NB: **/!\** Linux/OS compliant only for now.
 
 ###Command-line usage
 
-<code> $ jscr &lt;directory containing JS&gt; [optional : &lt;generated report directory, defaults current&gt;] </code>
+` $ jscr &lt;directory containing JS&gt; [optional : &lt;generated report directory, defaults current&gt;] `
 
 e.g.: 
-<code>$ jscr .</code>
+`$ jscr .`
 will generate report in current directory, using it as root for file tree walk-through.
 
 
 ###Module usage
 
-<pre>
+```javascript
 var jscr = require('jscomplexity');
-
-jscr('/path/to/js/dir', function(err, report){
-  if (!err) console.log(report); 
-});
-</pre>
+// jscr() returns a promise (using bluebird)
+jscr('/path/to/js/dir').then(console.log);
+```
