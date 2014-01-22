@@ -13,7 +13,7 @@ Command-line tool to generate a complexity report on file tree Javascript files.
 
 ###Command-line usage
 
-` $ jscr &lt;directory containing JS&gt; [optional : &lt;generated report directory, defaults current&gt;] `
+` $ jscr <target directoryS> [optional : generated report directory, defaults current] `
 
 e.g.: `$ jscr .` will generate report in current directory, using it as root for file tree walk-through.
 
