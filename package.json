@@ -1,10 +1,11 @@
 {
   "name": "jscomplexity",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "preferGlobal": "true",
   "bin": {
-    "jscr": "generate-report.js"
+    "jscr": "./bin/jscr"
   },
+  "main": "./index",
   "dependencies": {
     "walk": "~2.2.1",
     "handlebars": "~1.0.8",
@@ -13,5 +14,13 @@
     "complexity-report": "~1.0.2",
     "escomplex-ast-moz": "~0.1.5",
     "esprima": "~1.0.4"
+  },
+  "devDependencies": {
+    "mocha": "~1.17.0",
+    "chai": "~1.8.1",
+    "chai-as-promised": "~4.1.0"
+  },
+  "scripts": {
+    "test": "mocha"
   }
 }
