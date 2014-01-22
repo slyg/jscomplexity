@@ -1,31 +1,27 @@
-#jscomplexity
+#JScomplexity
 
 
-Command-line tool to generate a complexity report on file tree Javascript files. It is based on [complexityReport.js](https://github.com/philbooth/complexityReport.js) module results. Report stands in a .html file containing graphical representation of file tree when used from command-line.
-
-NB: **/!\** Linux/OS compliant only for now.
+Command-line tool to generate a complexity report on file tree Javascript files. It is based on [escomplex](https://github.com/philbooth/escomplex/) module results. Report stands in a .html file containing graphical representation of file tree when used from command-line.
 
 
 ###Installation 
 
-<code>npm install [-g] jscomplexity</code>
+`npm install -g jscomplexity`
 
 
 ###Command-line usage
 
-<code> $ jscr &lt;directory containing JS&gt; [optional : &lt;generated report directory, defaults current&gt;] </code>
+` $ jscr <target directoryS> [optional : generated report directory, defaults current] `
 
-e.g.: 
-<code>$ jscr .</code>
-will generate report in current directory, using it as root for file tree walk-through.
+e.g.: `$ jscr .` will generate report in current directory, using it as root for file tree walk-through.
 
 
 ###Module usage
 
-<pre>
+```javascript
 var jscr = require('jscomplexity');
+// jscr() returns a promise (using bluebird)
+jscr('/path/to/js/dir').then(console.log);
+```
 
-jscr('/path/to/js/dir', function(err, report){
-  if (!err) console.log(report); 
-});
-</pre>
+:warning: Linux/OSX compliant only (I haven't tested it on Windows).
