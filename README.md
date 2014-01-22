@@ -8,7 +8,7 @@ Command-line tool to generate a complexity report on file tree Javascript files.
 
 ###Installation 
 
-<code>npm install [-g] jscomplexity</code>
+`npm install -g jscomplexity`
 
 
 ###Command-line usage
