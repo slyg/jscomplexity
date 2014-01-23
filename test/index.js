@@ -63,6 +63,8 @@ describe('the complexity crawler promise', function () {
 
   it('should return the attended complex result', function(done){
 
+    this.timeout(10000);
+
     expect(crawler(treePathComplex))
       .to.eventually.deep.equal(expectedComplexRes)
       .to.be.fulfilled.and.notify(done);
