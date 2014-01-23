@@ -1,17 +1,33 @@
 #!/usr/bin/env node
 
-    var 
-        crawlComplexity = require('../src/crawl-complexity'),
-        srcDir = process.argv[2],
-        outputDir = process.argv[3],
-        output = require('../src/output')
-    ;
+var fs = require('fs'),
+    path = require('path'),
+    Promise = require('bluebird'),
+    writeFile = Promise.promisify(fs.writeFile, fs),
 
-    crawlComplexity(srcDir).then(function(data){
-    	output(data.report, outputDir);
-    }).caught(console.log);
-    
-    
-    
+    argvParser = require('../src/argv-parser'),
+    crawlComplexity = require('../src/crawl-complexity'),
+    generateHTML = require('../src/generateHTML');
+
+
+argvParser.parse(process.argv)
+  .then(argvParser.getTargetedTree)
+  .then(crawlComplexity)
+  .then(function(data){
+
+    var filename = argvParser.getOutputName(),
+        html = generateHTML(data.report)
+
+    return writeFile(filename, html);
+
+  })
+
+  .then(function(){
+    process.exit(0);
+  })
+  .caught(function(err){
+    console.log(err);
+    process.exit(1);
+  });
 
 

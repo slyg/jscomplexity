@@ -1,6 +1,6 @@
 {
   "name": "jscomplexity",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "preferGlobal": "true",
   "bin": {
     "jscr": "./bin/jscr.js"
@@ -13,7 +13,8 @@
     "escomplex": "~0.2.2",
     "complexity-report": "~1.0.2",
     "escomplex-ast-moz": "~0.1.5",
-    "esprima": "~1.0.4"
+    "esprima": "~1.0.4",
+    "commander": "~2.1.0"
   },
   "devDependencies": {
     "mocha": "~1.17.0",
