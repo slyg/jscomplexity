@@ -3,7 +3,7 @@
   "version": "0.0.13",
   "preferGlobal": "true",
   "bin": {
-    "jscr": "./bin/jscr"
+    "jscr": "./bin/jscr.js"
   },
   "main": "./index",
   "dependencies": {
@@ -18,9 +18,15 @@
   "devDependencies": {
     "mocha": "~1.17.0",
     "chai": "~1.8.1",
-    "chai-as-promised": "~4.1.0"
+    "chai-as-promised": "~4.1.0",
+    "grunt": "~0.4.2",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-istanbul-coverage": "0.0.2",
+    "grunt-istanbul": "~0.2.4",
+    "grunt-exec": "~0.4.3"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "istanbul": "istanbul cover _mocha test/*.js"
   }
 }

@@ -26,7 +26,7 @@
             resolver.fulfill(fileRef);
         }
 
-        return resolver.promise
+        return resolver.promise;
     }
 
     /**

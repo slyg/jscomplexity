@@ -1,3 +1,5 @@
+/*jshint -W018 */
+
 var 
     fs = require('fs'),
     handlebars = require('handlebars')
@@ -22,9 +24,4 @@ handlebars.registerHelper("foreach", function(arr, options) {
 });
 
 
-function evaluate(){
-    return handlebars.compile(fs.readFileSync(__dirname + '/tpl/report.hbs', "utf8"));
-};
-
-
-module.exports.evaluate = evaluate;
+module.exports.evaluate = handlebars.compile(fs.readFileSync(__dirname + '/tpl/report.hbs', "utf8"));;
