@@ -1,8 +1,8 @@
 var jscr = require('./index');
 var util = require('util');
 
-jscr('./src').then(function(report){
+jscr('./src').then(function(data){
 
-  console.log(JSON.stringify(report.data, null, 6));
+  console.log(JSON.stringify(data.report, null, 6));
 
 }).caught(console.log);
