@@ -12,7 +12,9 @@ grunt.initConfig({
 
   exec : {
     coverage : {
-      cmd : 'npm run-script istanbul'
+      cmd : 'npm run-script istanbul',
+      stdout : false,
+      stderr: false
     }
   },
     

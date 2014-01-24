@@ -24,4 +24,4 @@ handlebars.registerHelper("foreach", function(arr, options) {
 });
 
 
-module.exports.evaluate = handlebars.compile(fs.readFileSync(__dirname + '/tpl/report.hbs', "utf8"));;
+module.exports.evaluate = handlebars.compile(fs.readFileSync(__dirname + '/tpl/report.hbs', "utf8"));
