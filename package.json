@@ -1,5 +1,12 @@
 {
   "name": "jscomplexity",
+  "description" : "JS cyclomatic complexity report generator",
+  "license": "MIT",
+  "homepage": "https://github.com/slyg/jscomplexity",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/slyg/jscomplexity.git"
+  },
   "version": "0.0.14",
   "preferGlobal": "true",
   "bin": {
