@@ -154,7 +154,7 @@
      *   returns a Promise
      *   rejects promise if any runtime error occurs
      */
-    function crawlComplexity(path, options){
+    function crawlComplexity(path){
 
         var 
             reportList = [],
@@ -162,7 +162,7 @@
             resolver = Promise.defer()
         ;
 
-        walker = walk.walk(path, formatOptions(options));
+        var walker = walk.walk(path);
     
         walker
             .on("file", populateReportList(errorsList, reportList))
