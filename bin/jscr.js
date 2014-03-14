@@ -11,17 +11,20 @@ var fs = require('fs'),
 
 
 argvParser.parse(process.argv)
-  .then(argvParser.getTargetedTree)
-  .then(crawlComplexity)
+
+  .then(argvParser.getSpec)
+  .then(function(specs){
+    var path = specs.targetedTree;
+    return crawlComplexity(path, specs);
+  })
   .then(function(data){
 
-    var filename = argvParser.getOutputName(),
+    var filename = argvParser.getOutputFileName(),
         html = generateHTML(data.report)
 
     return writeFile(filename, html);
 
   })
-
   .then(function(){
     process.exit(0);
   })

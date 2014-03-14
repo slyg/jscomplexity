@@ -1,4 +1,4 @@
-module.exports = function(srcDir){
+module.exports = function(srcDir, options){
 
     var crawlComplexity = require('./src/crawl-complexity');
 

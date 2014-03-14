@@ -1,33 +1,43 @@
 var program = require('commander'),
     Promise = require('bluebird');
 
-var pjson = require('../package.json');
-
-var targetedTree = './',
-    outputName = 'jscomplexityreport.html',
-    optionsHandler = {};
+var pjson = require('../package.json'),
+    options = {
+      targetedTree : './',
+      getOutputFileName : 'jscr-report.html',
+      skippedDirectories : []
+    };
 
 program
   .version(pjson.version)
-  .usage('[<folder to analyse ...>] [options]');
+  .usage('[options] [<folder to analyse ...>]');
 
 program
   .command('*')
   .action(function(target){
-    targetedTree = target;
+    options.targetedTree = target;
+  });
+
+program
+  .option('-e, --exclude [folder]', 'exclude folders', function(folder){
+    options.skippedDirectories = folder.split(',');
   });
 
 module.exports.parse = function(argv){
   return new Promise(function (resolve) {
     program.parse(argv);
-    resolve(targetedTree);
+    resolve(options.targetedTree);
   });
 };
 
-module.exports.getTargetedTree = function(){
-  return targetedTree;
+module.exports.getSpec = function(){
+  return options;
 };
 
-module.exports.getOutputName = function(){
-  return outputName;
+module.exports.getTargetedTree = function(){
+  return options.targetedTree;
+};
+
+module.exports.getOutputFileName = function(){
+  return options.getOutputFileName;
 };

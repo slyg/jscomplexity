@@ -124,20 +124,45 @@
     }
 
     /**
+     *
+     */
+
+    function formatOptions(rawOptions){
+
+        var formattedOptions = {
+            followLinks: false
+        };
+
+        if(rawOptions){
+
+            if(
+                rawOptions.skippedDirectories 
+                && rawOptions.skippedDirectories.length > 0
+            ) {
+                formattedOptions.filters = rawOptions.skippedDirectories;
+            }
+
+        }
+
+        return formattedOptions;
+    }
+
+    /**
      * builds a complexity report of .js files 
      * found in a file tree from a given path
      *
      *   returns a Promise
      *   rejects promise if any runtime error occurs
      */
-    function buildFinalReport(path){
+    function crawlComplexity(path, options){
 
         var 
             reportList = [],
             errorsList = null,
-            walker = walk.walk(path),
             resolver = Promise.defer()
-        ;  
+        ;
+
+        walker = walk.walk(path, formatOptions(options));
     
         walker
             .on("file", populateReportList(errorsList, reportList))
@@ -154,4 +179,4 @@
 
     }
 
-    module.exports = buildFinalReport;
+    module.exports = crawlComplexity;
