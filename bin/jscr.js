@@ -14,8 +14,12 @@ argvParser.parse(process.argv)
 
   .then(argvParser.getSpec)
   .then(function(specs){
+
     var path = specs.targetedTree;
-    return crawlComplexity(path, specs);
+    var skipped = specs.skippedDirectory;
+
+    return crawlComplexity(path, skipped);
+    
   })
   .then(function(data){
 

@@ -19,8 +19,8 @@ program
   });
 
 program
-  .option('-e, --exclude [folder]', 'exclude folders', function(folder){
-    options.skippedDirectories = folder.split(',');
+  .option('-s, --skip <folder>', 'skip a folder', function(folder){
+    options.skippedDirectory = folder;
   });
 
 module.exports.parse = function(argv){

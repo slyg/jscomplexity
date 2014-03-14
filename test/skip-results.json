@@ -1,0 +1,12 @@
+{ 
+  "report":
+   [ { "path": "test/tree/complex/empty.js",
+       "escapedPath": "test/tree/complex/empty.js",
+       "complexity": 1,
+       "lineNumber": 0,
+       "maintainability": 0,
+       "halstead": { "length": 0, "vocabulary": 0, "difficulty": 0, "bugs": 0 } 
+    }
+    ],
+  "errors": null 
+}

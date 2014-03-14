@@ -14,9 +14,10 @@
      *
      *   returns a Promise
      *   rejected promise if not .js
+     *
      *   fulfilled promise returns the passed file reference (path)
      */
-    function checkFileExtension(fileRef){ 
+    function isJavascriptFile(fileRef){ 
 
         var resolver = Promise.defer();
 
@@ -27,6 +28,40 @@
         }
 
         return resolver.promise;
+    }
+
+
+
+    /**
+     * Checks for file not to be skipped
+     *
+     *   returns a Promise
+     *   rejected promise if 'fileRef' matches 'skipped' String value
+     *   fulfilled promise if 'skipped' is falsy or empty
+     *
+     *   fulfilled promise returns the passed file reference (path)
+     */
+
+    function isNotSkipped(fileRef, skipped){
+
+        var 
+            skippedRegExp = new RegExp(skipped, 'g')
+        ;
+
+        if(typeof skipped === 'string') {
+            
+            if( fileRef.match(skippedRegExp) ) {
+                throw new Error(fileRef + ' is skipped');
+            } else {
+                return fileRef;
+            }
+
+        } else {
+
+            return fileRef;
+
+        }
+
     }
 
     /**
@@ -90,7 +125,7 @@
      *
      *   returns a Function
      */
-    function populateReportList(errorsList, reportList){
+    function populateReportList(errorsList, reportList, skipped){
 
         /**
          * Populates error and report stack objects 
@@ -103,7 +138,11 @@
 
             var fileRef = require('path').normalize(root + "/" + fileStats.name);
 
-            checkFileExtension(fileRef)
+            Promise.resolve(fileRef)
+                .then(isJavascriptFile, next)
+                .then(function(fileRef){
+                    return isNotSkipped(fileRef, skipped);
+                })
                 .caught(next) // fire 'next' if extension is not correct
                 .then(readJSFile)
                 .then(buildFileReport)
@@ -124,37 +163,13 @@
     }
 
     /**
-     *
-     */
-
-    function formatOptions(rawOptions){
-
-        var formattedOptions = {
-            followLinks: false
-        };
-
-        if(rawOptions){
-
-            if(
-                rawOptions.skippedDirectories 
-                && rawOptions.skippedDirectories.length > 0
-            ) {
-                formattedOptions.filters = rawOptions.skippedDirectories;
-            }
-
-        }
-
-        return formattedOptions;
-    }
-
-    /**
      * builds a complexity report of .js files 
      * found in a file tree from a given path
      *
      *   returns a Promise
      *   rejects promise if any runtime error occurs
      */
-    function crawlComplexity(path){
+    function crawlComplexity(path, skippedFolder){
 
         var 
             reportList = [],
@@ -162,10 +177,10 @@
             resolver = Promise.defer()
         ;
 
-        var walker = walk.walk(path);
+        var walker = walk.walk(path || './');
     
         walker
-            .on("file", populateReportList(errorsList, reportList))
+            .on("file", populateReportList(errorsList, reportList, skippedFolder))
             .on("error", function(){ resolver.reject('runtime error'); })
             .on("end", function(){
                 resolver.resolve({
