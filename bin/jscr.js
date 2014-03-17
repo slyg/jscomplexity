@@ -17,8 +17,9 @@ argvParser.parse(process.argv)
 
     var path = specs.targetedTree;
     var skipped = specs.skippedDirectory;
+    var isVerbose = specs.isVerbose
 
-    return crawlComplexity(path, skipped);
+    return crawlComplexity(path, skipped, isVerbose);
     
   })
   .then(function(data){

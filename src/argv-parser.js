@@ -4,28 +4,36 @@ var program = require('commander'),
 var pjson = require('../package.json'),
     options = {
       targetedTree : './',
+      isVerbose : false,
       getOutputFileName : 'jscr-report.html',
-      skippedDirectories : []
+      skippedDirectory : undefined
     };
 
 program
   .version(pjson.version)
-  .usage('[options] [<folder to analyse ...>]');
+  .usage('[options]');
 
 program
-  .command('*')
-  .action(function(target){
-    options.targetedTree = target;
-  });
-
-program
+  .option('-t, --target <folder>', 'change root folder to analyse - default is current directory', function(folder){
+    options.targetedTree = folder;
+  })
   .option('-s, --skip <folder>', 'skip a folder', function(folder){
     options.skippedDirectory = folder;
-  });
+  })
+  .option('-o, --output <filename>', 'customize html report filename - default is \''+ options.getOutputFileName +'\'', function(filename){
+    options.getOutputFileName = filename;
+  })
+  .option('-v, --verbose', 'outputs analysisis logs');
 
 module.exports.parse = function(argv){
   return new Promise(function (resolve) {
+
     program.parse(argv);
+
+    if(program.verbose) {
+      options.isVerbose = true;
+    }
+
     resolve(options.targetedTree);
   });
 };

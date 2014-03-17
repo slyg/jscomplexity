@@ -125,7 +125,7 @@
      *
      *   returns a Function
      */
-    function populateReportList(errorsList, reportList, skipped){
+    function populateReportList(errorsList, reportList, skipped, isVerbose){
 
         /**
          * Populates error and report stack objects 
@@ -147,6 +147,9 @@
                 .then(readJSFile)
                 .then(buildFileReport)
                 .then(function(report){
+                    if(isVerbose) {
+                        console.log(report);
+                    }
                     reportList.push(report);
                 })
                 .caught(function(err){
@@ -169,18 +172,19 @@
      *   returns a Promise
      *   rejects promise if any runtime error occurs
      */
-    function crawlComplexity(path, skippedFolder){
+    function crawlComplexity(path, skippedFolder, isVerbose){
 
         var 
             reportList = [],
             errorsList = null,
-            resolver = Promise.defer()
+            resolver = Promise.defer(),
+            isVerbose = isVerbose || false;
         ;
 
         var walker = walk.walk(path || './');
     
         walker
-            .on("file", populateReportList(errorsList, reportList, skippedFolder))
+            .on("file", populateReportList(errorsList, reportList, skippedFolder, isVerbose))
             .on("error", function(){ resolver.reject('runtime error'); })
             .on("end", function(){
                 resolver.resolve({
