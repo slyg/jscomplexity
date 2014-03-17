@@ -13,9 +13,18 @@ Command-line tool and module to generate a complexity report on file tree Javasc
 
 ###Command-line usage
 
-` $ jscr <target directoryS> [optional : generated report directory, defaults current] `
+`
+Usage: jscr [options]
 
-e.g.: `$ jscr .` will generate report in current directory, using it as root for file tree walk-through.
+  Options:
+
+    -h, --help               output usage information
+    -V, --version            output the version number
+    -t, --target <folder>    change root folder to analyse - default is current directory
+    -s, --skip <folder>      skip a folder
+    -o, --output <filename>  customize html report filename - default is 'jscr-report.html'
+    -v, --verbose            outputs analysisis logs
+`
 
 
 ###Module usage
