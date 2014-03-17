@@ -13,7 +13,7 @@ Command-line tool and module to generate a complexity report on file tree Javasc
 
 ###Command-line usage
 
-`
+```
 Usage: jscr [options]
 
   Options:
@@ -24,7 +24,7 @@ Usage: jscr [options]
     -s, --skip <folder>      skip a folder
     -o, --output <filename>  customize html report filename - default is 'jscr-report.html'
     -v, --verbose            outputs analysisis logs
-`
+```
 
 
 ###Module usage
