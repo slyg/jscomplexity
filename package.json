@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/slyg/jscomplexity.git"
   },
-  "version": "0.0.15",
+  "version": "0.1.0",
   "preferGlobal": "true",
   "bin": {
     "jscr": "./bin/jscr.js"
