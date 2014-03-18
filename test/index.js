@@ -59,7 +59,7 @@ describe('the complexity crawler promise', function () {
 
     this.timeout(10000);
 
-    expect(crawler(treePathComplex, '/tree/complex/jquery'))
+    expect(crawler(treePathComplex, ['/tree/complex/jquery']))
       .to.eventually.deep.equal(expectedSkipRes)
       .to.be.fulfilled.and.notify(done);
     
