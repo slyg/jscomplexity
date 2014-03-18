@@ -21,7 +21,7 @@ Usage: jscr [options]
     -h, --help               output usage information
     -V, --version            output the version number
     -t, --target <folder>    change root folder to analyse - default is current directory
-    -s, --skip <folder>      skip a folder
+    -s, --skip <pattern>     skip path pattern during tree walk - matched items will be skipped from report
     -o, --output <filename>  customize html report filename - default is 'jscr-report.html'
     -v, --verbose            outputs analysisis logs
 ```

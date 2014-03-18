@@ -17,8 +17,8 @@ program
   .option('-t, --target <folder>', 'change root folder to analyse - default is current directory', function(folder){
     options.targetedTree = folder;
   })
-  .option('-s, --skip <folder>', 'skip a folder', function(folder){
-    options.skippedDirectory = folder;
+  .option('-s, --skip <pattern>', 'skip path pattern during tree walk - matched items will be skipped from report', function(pattern){
+    options.skippedDirectory = pattern;
   })
   .option('-o, --output <filename>', 'customize html report filename - default is \''+ options.getOutputFileName +'\'', function(filename){
     options.getOutputFileName = filename;
