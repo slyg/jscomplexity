@@ -1,13 +1,13 @@
 {
   "name": "jscomplexity",
-  "description" : "JS cyclomatic complexity report generator",
+  "description": "JS cyclomatic complexity report generator",
   "license": "MIT",
   "homepage": "https://github.com/slyg/jscomplexity",
   "repository": {
     "type": "git",
     "url": "https://github.com/slyg/jscomplexity.git"
   },
-  "version": "0.1.0",
+  "version": "0.1.1",
   "preferGlobal": "true",
   "bin": {
     "jscr": "./bin/jscr.js"
@@ -21,7 +21,10 @@
     "complexity-report": "~1.0.2",
     "escomplex-ast-moz": "~0.1.5",
     "esprima": "~1.0.4",
-    "commander": "~2.1.0"
+    "commander": "~2.1.0",
+    "lodash": "^2.4.1",
+    "cli-table": "^0.3.0",
+    "colors": "^0.6.2"
   },
   "devDependencies": {
     "mocha": "~1.17.0",

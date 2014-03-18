@@ -16,7 +16,7 @@ argvParser.parse(process.argv)
   .then(function(specs){
 
     var path = specs.targetedTree;
-    var skipped = specs.skippedDirectory;
+    var skipped = specs.skippedDirectories;
     var isVerbose = specs.isVerbose
 
     return crawlComplexity(path, skipped, isVerbose);

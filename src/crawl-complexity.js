@@ -6,6 +6,8 @@
         treeWalker = require('escomplex-ast-moz'),
         esprima = require('esprima'),
         path = require('path'),
+        _ = require('lodash'),
+        colors = require('colors'),
         readFile = Promise.promisify(fs.readFile, fs);
     
 
@@ -35,32 +37,20 @@
     /**
      * Checks for file not to be skipped
      *
-     *   returns a Promise
-     *   rejected promise if 'fileRef' matches 'skipped' String value
-     *   fulfilled promise if 'skipped' is falsy or empty
-     *
-     *   fulfilled promise returns the passed file reference (path)
+     *   returns a Boolean
+     *   returns true if 'fileRef' matches 'skipped' String Array value
+     *   returns false if 'skipped' is falsy or empty
      */
 
-    function isNotSkipped(fileRef, skipped){
+    function isToSkip(fileRef, skipped){
 
-        var 
-            skippedRegExp = new RegExp(skipped, 'g')
-        ;
+        skippedRegExps = _.map(skipped, function(path){
+            return new RegExp(path, 'g'); 
+        });
 
-        if(typeof skipped === 'string') {
-            
-            if( fileRef.match(skippedRegExp) ) {
-                throw new Error(fileRef + ' is skipped');
-            } else {
-                return fileRef;
-            }
-
-        } else {
-
-            return fileRef;
-
-        }
+        return _.some(skippedRegExps, function(skipRegex){
+            return fileRef.match(skipRegex)
+        });
 
     }
 
@@ -125,7 +115,7 @@
      *
      *   returns a Function
      */
-    function populateReportList(errorsList, reportList, skipped, isVerbose){
+    function populateReportList(errorsList, reportList, skipPaths, isVerbose){ 
 
         /**
          * Populates error and report stack objects 
@@ -141,14 +131,26 @@
             Promise.resolve(fileRef)
                 .then(isJavascriptFile, next)
                 .then(function(fileRef){
-                    return isNotSkipped(fileRef, skipped);
+
+                    return new Promise(function(resolve, reject){
+
+                        if(isToSkip(fileRef, skipPaths)){
+                            if(isVerbose){
+                                console.log('skip'.grey, fileRef, '');
+                            }
+                            reject(fileRef);
+                        } else {
+                            resolve(fileRef);
+                        }
+                    });
+                    
                 })
-                .caught(next) // fire 'next' if extension is not correct
+                .error(next) // fire 'next' if extension is not correct
                 .then(readJSFile)
                 .then(buildFileReport)
                 .then(function(report){
-                    if(isVerbose) {
-                        console.log(report);
+                    if(isVerbose){
+                        console.log('keep'.green, fileRef, new String(report.complexity).yellow);
                     }
                     reportList.push(report);
                 })
@@ -172,25 +174,26 @@
      *   returns a Promise
      *   rejects promise if any runtime error occurs
      */
-    function crawlComplexity(path, skippedFolder, isVerbose){
+    function crawlComplexity(path, skippedDirectories, isVerbose){
 
         var 
             reportList = [],
             errorsList = null,
             resolver = Promise.defer(),
-            isVerbose = isVerbose || false;
+            isVerbose = isVerbose || false,
+            skipped = skippedDirectories || []
         ;
 
         var walker = walk.walk(path || './');
     
         walker
-            .on("file", populateReportList(errorsList, reportList, skippedFolder, isVerbose))
+            .on("file", populateReportList(errorsList, reportList, skipped, isVerbose))
             .on("error", function(){ resolver.reject('runtime error'); })
             .on("end", function(){
                 resolver.resolve({
                     report : reportList,
                     errors : errorsList
-                }); 
+                });
             })
         ;
 
