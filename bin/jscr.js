@@ -1,41 +1,35 @@
 #!/usr/bin/env node
 
-var fs = require('fs'),
-    path = require('path'),
-    Promise = require('bluebird'),
-    writeFile = Promise.promisify(fs.writeFile, fs),
+var 
+  path = require('path'),
+  Promise = require('bluebird'),
 
-    argvParser = require('../src/argv-parser'),
-    crawlComplexity = require('../src/crawl-complexity'),
-    generateHTML = require('../src/generateHTML');
+  cliArgParser = require('./lib/argv-parser'),
+  crawlComplexity = require('../src/crawl-complexity'),
+  outputHTMLReport = require('./lib/outputHTMLReport'),
+  outputCLIReport = require('./lib/outputCLIReport')
+;
 
+cliArgParser.getSpec(function(path, skipped, isVerbose, outPutFileName){
 
-argvParser.parse(process.argv)
+  crawlComplexity(path, skipped, isVerbose)
 
-  .then(argvParser.getSpec)
-  .then(function(specs){
+    .then(function(data){
+      var report = data.report;
+      return Promise.join(
+        outputHTMLReport(report, outPutFileName), 
+        outputCLIReport(report)
+      );
+    })
 
-    var path = specs.targetedTree;
-    var skipped = specs.skippedDirectories;
-    var isVerbose = specs.isVerbose
+    .then(function(){
+      process.exit(0);
+    })
 
-    return crawlComplexity(path, skipped, isVerbose);
-    
-  })
-  .then(function(data){
+    .caught(function(err){
+      console.log(err);
+      process.exit(1);
+    });
 
-    var filename = argvParser.getOutputFileName(),
-        html = generateHTML(data.report)
-
-    return writeFile(filename, html);
-
-  })
-  .then(function(){
-    process.exit(0);
-  })
-  .caught(function(err){
-    console.log(err);
-    process.exit(1);
-  });
-
+});
 
