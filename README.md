@@ -26,9 +26,6 @@ Usage: jscr [options]
     -v, --verbose            outputs analysisis logs
 ```
 
-![alt tag](https://raw.github.com/slyg/jscomplexity/master/images/screenshot-console.png)
-
-
 ###Module usage
 
 ```javascript
@@ -37,6 +34,16 @@ var jscr = require('jscomplexity');
 jscr('/path/to/js/dir').then(console.log);
 ```
 
+:warning: Linux/OSX compliant only (I haven't tested it on Windows).
+
+
+### Sample outputs (gremlins.js)
+
+#### Terminal
+
+![alt tag](https://raw.github.com/slyg/jscomplexity/master/images/screenshot-console.png)
+
+#### HTML report
+
 ![alt tag](https://raw.github.com/slyg/jscomplexity/master/images/screenshot-webUI.png)
 
-:warning: Linux/OSX compliant only (I haven't tested it on Windows).
