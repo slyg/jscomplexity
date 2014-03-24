@@ -26,6 +26,8 @@ Usage: jscr [options]
     -v, --verbose            outputs analysisis logs
 ```
 
+![alt tag](https://raw.github.com/slyg/jscomplexity/master/images/screenshot-console.png)
+
 
 ###Module usage
 
@@ -34,5 +36,7 @@ var jscr = require('jscomplexity');
 // jscr() returns a promise (using bluebird)
 jscr('/path/to/js/dir').then(console.log);
 ```
+
+![alt tag](https://raw.github.com/slyg/jscomplexity/master/images/screenshot-webUI.png)
 
 :warning: Linux/OSX compliant only (I haven't tested it on Windows).
