@@ -10,29 +10,29 @@ var chai = require('chai'),
   treePathComplex = treePath + '/complex',
   treePathCrash = '/crash',
   treePathNotExisting = '/doesntexist',
-  crawler = require('../src/crawl-complexity'),
+  scanner = require('../src/scan'),
   expectedComplexRes = require('./complex-tree-results'),
   expectedSkipRes = require('./skip-results'),
   expectedEmptyRes = { report : [], errors : null };
 
 chai.use(chaiAsPromised);
 
-describe('the complexity crawler', function () {
+describe('the complexity scanner', function () {
 
   it('should be a Promise', function(){
 
-    expect(crawler(treePath))
+    expect(scanner(treePath))
       .to.be.an.instanceof(Promise);
 
   });
 
 });
 
-describe('the complexity crawler promise', function () {
+describe('the complexity scanner promise', function () {
 
   it('should return an empty array when targeted folder doesn\'t contain .js files', function(done){
 
-    expect(crawler(treePathWithoutJSFile))
+    expect(scanner(treePathWithoutJSFile))
       .to.eventually.deep.equal(expectedEmptyRes)
       .and.notify(done);
     
@@ -40,7 +40,7 @@ describe('the complexity crawler promise', function () {
 
   it('should return an empty array when targeted folder doesn\'t exist', function(done){
 
-    expect(crawler(treePathWithoutJSFile))
+    expect(scanner(treePathWithoutJSFile))
       .to.eventually.deep.equal(expectedEmptyRes)
       .and.notify(done);
     });
@@ -49,7 +49,7 @@ describe('the complexity crawler promise', function () {
 
     this.timeout(10000);
 
-    expect(crawler(treePathComplex))
+    expect(scanner(treePathComplex))
       .to.eventually.deep.equal(expectedComplexRes)
       .to.be.fulfilled.and.notify(done);
     
@@ -59,7 +59,7 @@ describe('the complexity crawler promise', function () {
 
     this.timeout(10000);
 
-    expect(crawler(treePathComplex, ['/tree/complex/jquery']))
+    expect(scanner(treePathComplex, ['/tree/complex/jquery']))
       .to.eventually.deep.equal(expectedSkipRes)
       .to.be.fulfilled.and.notify(done);
     

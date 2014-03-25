@@ -174,7 +174,7 @@
      *   returns a Promise
      *   rejects promise if any runtime error occurs
      */
-    function crawlComplexity(path, skippedDirectories, isVerbose){
+    function scan(path, skippedDirectories, isVerbose){
 
         var 
             reportList = [],
@@ -201,4 +201,4 @@
 
     }
 
-    module.exports = crawlComplexity;
+    module.exports = scan;

@@ -33,7 +33,7 @@ if(program.skip){
   options.skippedDirectories = program.skip;
 } 
 
-module.exports.getSpec = function(callback){
+module.exports = function getSpec(callback){
   return callback(
     options.targetedTree,
     options.skippedDirectories,
