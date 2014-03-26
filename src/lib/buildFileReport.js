@@ -10,19 +10,19 @@ var cr = require('escomplex'),
  *   crashes if an error occurs (especially while esprima parsing)
  */
  
-function buildFileReport(fileSpec){
+function buildFileReport(fileRef, fileData){
 
     var report;
 
     try {
-        report = cr.analyse( esprima.parse(fileSpec.data, {loc : true}),  treeWalker);
+        report = cr.analyse( esprima.parse(fileData, {loc : true}),  treeWalker);
     } catch(e){
         throw new Error('parsing error');
     }
 
     var toBeDisplayed = {
-        path            : fileSpec.fileRef,
-        escapedPath     : fileSpec.fileRef.replace(/\\/g, '\\'), // windows use
+        path            : fileRef,
+        escapedPath     : fileRef.replace(/\\/g, '\\'), // windows use
         complexity      : report.aggregate.cyclomatic,
         lineNumber      : report.aggregate.sloc.logical,
         maintainability : report.aggregate.halstead.effort,

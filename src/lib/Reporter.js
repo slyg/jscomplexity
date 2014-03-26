@@ -1,8 +1,8 @@
-var Promise = require('bluebird'),
-    path = require('path');
+var Promise = require('bluebird')
+    fs = require('fs'),
+    readFile = Promise.promisify(fs.readFile, fs);
 
 var PathFilter = require('./PathFilter'),
-    readJSFile = require('./readJSFile'),
     buildFileReport = require('./buildFileReport');
 
 /**
@@ -35,45 +35,44 @@ function Reporter(skipPaths, isVerbose){
    * @returns {Promise}
    */
 
-  this.populate = function (root, fileStats, next) {
+  this.populate = function (fileRef, next) {
 
-    var fileRef = path.normalize(root + '/' + fileStats.name);
     var pathFilter = new PathFilter(skipPaths);
 
-    return Promise.resolve(fileRef)
+    return Promise.resolve()
 
-      .then(function(fileRef){
-
-        if( pathFilter.isValidFile(fileRef) ){
-          return fileRef;
-        } else {
-          throw new Error('not a valid file'); 
-        }
-
+      .then(function(){
+        return pathFilter.isValidFile(fileRef);
       })
-
-      .then(readJSFile)
-      .then(buildFileReport)
-
+      .then(function(){
+        return readFile(fileRef, 'utf8');
+      })
+      .then(function(data){
+        return buildFileReport(fileRef, data);
+      })
       .then(function(report){
         if(isVerbose){ console.log('%s | %s', report.complexity, fileRef); }
         reportList.push(report);
       })
-
       .caught(function(err){
         failsList.push({ref : fileRef, message : err.message });
       })
-
       .finally(next);
       
-  }
+  };
+
+  /**
+   * Returns report
+   * 
+   * @returns {Object} The report object
+   */
 
   this.getResults = function(){
     return {
       report : reportList,
       fails : failsList
     };
-  }
+  };
 
 }
 

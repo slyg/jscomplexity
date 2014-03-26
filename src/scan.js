@@ -1,27 +1,35 @@
-    
 var walk = require('walk'),
-    Promise = require('bluebird');
+    Promise = require('bluebird'),
+    path = require('path');
 
 var Reporter = require('./lib/Reporter');
 
 /**
- * builds a complexity report of .js files 
- * found in a file tree from a given path
+ * Scan a file tree seeking for js files and generates a complexity report 
  *
- *   returns a Promise
- *   rejects promise if any runtime error occurs
+ * @public
+ * @param {String}  path                The filetree root directory
+ * @param {Array}   skippedDirectories  The paths patterns to be skipped during walk
+ * @param {Boolean} isVerbose           The log stdout option
+ *
+ * @returns {Promise} The result is the final report
  */
 
-function scan(path, skippedDirectories, isVerbose){
+function scan(rootPath, skippedDirectories, isVerbose){
 
   var resolver = Promise.defer(),
-      walker = walk.walk(path || './'),
-      reporter = new Reporter(skippedDirectories ? skippedDirectories : [], isVerbose);
+      walker = walk.walk(rootPath || './'),
+      reporter = new Reporter(skippedDirectories ? skippedDirectories : [], isVerbose ? isVerbose : false);
 
   walker
-    .on("file", reporter.populate)
-    .on("error", function(){ resolver.reject('runtime error'); })
-    .on("end",   function(){ resolver.resolve( reporter.getResults() ); })
+    .on("file",  function(root, fileStats, next){
+
+      var fileRef = path.normalize(root + '/' + fileStats.name);
+      return reporter.populate(fileRef, next);
+
+    })
+    .on("error", function(){ return resolver.reject('runtime error'); })
+    .on("end",   function(){ return resolver.resolve( reporter.getResults() ); })
   ;
 
   return resolver.promise;

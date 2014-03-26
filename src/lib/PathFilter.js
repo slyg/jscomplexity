@@ -1,4 +1,5 @@
-var _ = require('lodash');
+var Promise = require('bluebird'),
+    _ = require('lodash');
 
 /**
  * Instanciate a path filter
@@ -24,14 +25,18 @@ function PathFilter(pathsToSkip){
      
     this.isValidFile = function(fileRef){
 
-        var isJavascriptFile = (/\.(js)$/i).test(fileRef),
-            hasValidPath = !_.some(skippedRegExps, function(skipRegex){
-                return fileRef.match(skipRegex);
-            });
+        return new Promise(function(resolve, reject){
 
-        return (isJavascriptFile && hasValidPath);
+            var isJavascriptFile = (/\.(js)$/i).test(fileRef),
+                hasValidPath = !_.some(skippedRegExps, function(skipRegex){
+                    return fileRef.match(skipRegex);
+                });
 
-    }
+            (isJavascriptFile && hasValidPath) ? resolve() : reject(new Error('not a valid file'));
+
+        });
+
+    };
 
 }
 
