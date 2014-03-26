@@ -8,14 +8,13 @@ var Reporter = require('./lib/Reporter');
  * Scan a file tree seeking for js files and generates a complexity report 
  *
  * @public
- * @param {String}  path                The filetree root directory
- * @param {Array}   skippedDirectories  The paths patterns to be skipped during walk
- * @param {Boolean} isVerbose           The log stdout option
- *
- * @returns {Promise} The result is the final report
+ * @param {String}  'path'                The filetree root directory
+ * @param {Array}   'skippedDirectories'  The paths patterns to be skipped during walk
+ * @param {Boolean} 'isVerbose'           The log stdout option
+ * @returns {Promise}                     The fulfilled promise returns the final report
  */
 
-function scan(rootPath, skippedDirectories, isVerbose){
+module.exports = function (rootPath, skippedDirectories, isVerbose){
 
   var resolver = Promise.defer(),
       walker = walk.walk(rootPath || './'),
@@ -34,6 +33,4 @@ function scan(rootPath, skippedDirectories, isVerbose){
 
   return resolver.promise;
 
-}
-
-module.exports = scan;
+};
