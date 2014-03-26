@@ -10,6 +10,22 @@ Command-line tool and module to generate a complexity report on file tree Javasc
 
 `npm install -g jscomplexity`
 
+###Module usage
+
+```javascript
+var jscr = require('jscomplexity');
+
+// jscr() returns a promise (using bluebird)
+jscr('/path/to/js/dir').then(console.log);
+
+// you can also use CPS style
+jscr('/path/to/js/dir', function(err, result){
+  if(err) {
+    return console.log(err);
+  }
+  console.log(result);
+});
+```
 
 ###Command-line usage
 
@@ -24,14 +40,6 @@ Usage: jscr [options]
     -s, --skip <pattern>     skip path pattern during tree walk - matched items will be skipped from report
     -o, --output <filename>  customize html report filename - default is 'jscr-report.html'
     -v, --verbose            outputs analysisis logs
-```
-
-###Module usage
-
-```javascript
-var jscr = require('jscomplexity');
-// jscr() returns a promise (using bluebird)
-jscr('/path/to/js/dir').then(console.log);
 ```
 
 :warning: Linux/OSX compliant only (I haven't tested it on Windows).
