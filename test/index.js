@@ -10,10 +10,15 @@ var chai = require('chai'),
   treePathComplex = treePath + '/complex',
   treePathCrash = '/crash',
   treePathNotExisting = '/doesntexist',
-  scanner = require('../src/scan'),
+  scanner = require('../index'),
   expectedComplexRes = require('./complex-tree-results'),
   expectedSkipRes = require('./skip-results'),
-  expectedEmptyRes = { report : [], errors : null };
+  expectedEmptyRes = {
+    report : [],
+    fails : [
+      {ref: 'test/tree/withoutjs/stuff', message : 'not a valid file'}
+    ]
+  };
 
 chai.use(chaiAsPromised);
 
@@ -33,17 +38,11 @@ describe('the complexity scanner promise', function () {
   it('should return an empty array when targeted folder doesn\'t contain .js files', function(done){
 
     expect(scanner(treePathWithoutJSFile))
-      .to.eventually.deep.equal(expectedEmptyRes)
+      .to.be.fulfilled
+      .and.to.eventually.deep.equal(expectedEmptyRes)
       .and.notify(done);
     
   });
-
-  it('should return an empty array when targeted folder doesn\'t exist', function(done){
-
-    expect(scanner(treePathWithoutJSFile))
-      .to.eventually.deep.equal(expectedEmptyRes)
-      .and.notify(done);
-    });
 
   it('should return the attended complex result', function(done){
 
@@ -51,7 +50,8 @@ describe('the complexity scanner promise', function () {
 
     expect(scanner(treePathComplex))
       .to.eventually.deep.equal(expectedComplexRes)
-      .to.be.fulfilled.and.notify(done);
+      .to.be.fulfilled
+      .and.notify(done);
     
   });
 
@@ -61,7 +61,8 @@ describe('the complexity scanner promise', function () {
 
     expect(scanner(treePathComplex, ['/tree/complex/jquery']))
       .to.eventually.deep.equal(expectedSkipRes)
-      .to.be.fulfilled.and.notify(done);
+      .to.be.fulfilled
+      .and.notify(done);
     
   });
 

@@ -25,5 +25,5 @@
       "halstead": { "length": 28696, "vocabulary": 1262, "difficulty": 355, "bugs": 99 } 
     } 
   ],
-  "errors" : null
+  "fails" : [{ "ref": "test/tree/complex/stuff", "message": "not a valid file" }]
 }

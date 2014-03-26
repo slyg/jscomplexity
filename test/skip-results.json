@@ -8,5 +8,18 @@
        "halstead": { "length": 0, "vocabulary": 0, "difficulty": 0, "bugs": 0 } 
     }
     ],
-  "errors": null 
+  "fails": [ 
+    {
+      "ref": "test/tree/complex/stuff",
+      "message": "not a valid file"
+    },
+    {
+      "ref": "test/tree/complex/jquery/jquery-2.0.3.js",
+      "message": "not a valid file"
+    },
+    {
+      "ref": "test/tree/complex/jquery/min/jquery-2.0.3.min.js",
+      "message": "not a valid file"
+    } 
+  ] 
 }

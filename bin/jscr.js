@@ -4,7 +4,7 @@ var
   path = require('path'),
   Promise = require('bluebird'),
 
-  scan = require('../src/scan'),
+  scan = require('../index'),
   getSpec = require('./lib/getSpec'),
   outputHTMLReport = require('./lib/outputHTMLReport'),
   outputCLIReport = require('./lib/outputCLIReport')

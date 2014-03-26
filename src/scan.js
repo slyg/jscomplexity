@@ -1,204 +1,31 @@
     
-    var cr = require('escomplex'),
-        fs = require('fs'),
-        walk = require('walk'),
-        Promise = require('bluebird'),
-        treeWalker = require('escomplex-ast-moz'),
-        esprima = require('esprima'),
-        path = require('path'),
-        _ = require('lodash'),
-        colors = require('colors'),
-        readFile = Promise.promisify(fs.readFile, fs);
-    
+var walk = require('walk'),
+    Promise = require('bluebird');
 
-    /**
-     * Checks file extension
-     *
-     *   returns a Promise
-     *   rejected promise if not .js
-     *
-     *   fulfilled promise returns the passed file reference (path)
-     */
-    function isJavascriptFile(fileRef){ 
+var Reporter = require('./lib/Reporter');
 
-        var resolver = Promise.defer();
+/**
+ * builds a complexity report of .js files 
+ * found in a file tree from a given path
+ *
+ *   returns a Promise
+ *   rejects promise if any runtime error occurs
+ */
 
-        if( !(/\.(js)$/i).test(fileRef) ) {
-            resolver.reject(fileRef + ' is not a .js file');
-        } else {
-            resolver.fulfill(fileRef);
-        }
+function scan(path, skippedDirectories, isVerbose){
 
-        return resolver.promise;
-    }
+  var resolver = Promise.defer(),
+      walker = walk.walk(path || './'),
+      reporter = new Reporter(skippedDirectories ? skippedDirectories : [], isVerbose);
 
+  walker
+    .on("file", reporter.populate)
+    .on("error", function(){ resolver.reject('runtime error'); })
+    .on("end",   function(){ resolver.resolve( reporter.getResults() ); })
+  ;
 
+  return resolver.promise;
 
-    /**
-     * Checks for file not to be skipped
-     *
-     *   returns a Boolean
-     *   returns true if 'fileRef' matches 'skipped' String Array value
-     *   returns false if 'skipped' is falsy or empty
-     */
+}
 
-    function isToSkip(fileRef, skipped){
-
-        skippedRegExps = _.map(skipped, function(path){
-            return new RegExp(path, 'g'); 
-        });
-
-        return _.some(skippedRegExps, function(skipRegex){
-            return fileRef.match(skipRegex)
-        });
-
-    }
-
-    /**
-     * Reads JS file
-     *
-     *   returns a Promise
-     *   rejects promise if an error occurs while reading file
-     *   fulfilled promise returns a file spec object containing 
-     *     - the passed file reference (relative path)
-     *     - the stringified file content
-     */
-    function readJSFile(fileRef){ 
-
-        return readFile(fileRef, 'utf8').then(function(data){
-            return {
-                fileRef : fileRef,
-                data : data
-            };
-        });
-        
-    }
-
-    /**
-     * Builds final complexity report of
-     * a given file from file spec
-     *
-     *   returns a report hash
-     *   crashes if an error occurs (especially while esprima parsing)
-     */
-    function buildFileReport(fileSpec){
-
-        var report;
-
-        try {
-            report = cr.analyse( esprima.parse(fileSpec.data, {loc : true}),  treeWalker);
-        } catch(e){
-            throw new Error('parsing error');
-        }
-
-        var toBeDisplayed = {
-            path            : fileSpec.fileRef,
-            escapedPath     : fileSpec.fileRef.replace(/\\/g, '\\'), // windows use
-            complexity      : report.aggregate.cyclomatic,
-            lineNumber      : report.aggregate.sloc.logical,
-            maintainability : report.aggregate.halstead.effort,
-            halstead        : {
-                length         : report.aggregate.halstead.length,
-                vocabulary     : Math.round(report.aggregate.halstead.vocabulary),
-                difficulty     : Math.round(report.aggregate.halstead.difficulty),
-                bugs           : Math.round(report.aggregate.halstead.bugs)
-            }
-        };
-
-        return toBeDisplayed;
-        
-    }
-
-    /**
-     * initializes a high-level function context 
-     * with error and report containers
-     *
-     *   returns a Function
-     */
-    function populateReportList(errorsList, reportList, skipPaths, isVerbose){ 
-
-        /**
-         * Populates error and report stack objects 
-         * from a file spec
-         *
-         *  returns undefined
-         *  triggers next() callback when done
-         */
-        function populate(root, fileStats, next) {
-
-            var fileRef = require('path').normalize(root + "/" + fileStats.name);
-
-            Promise.resolve(fileRef)
-                .then(isJavascriptFile, next)
-                .then(function(fileRef){
-
-                    return new Promise(function(resolve, reject){
-
-                        if(isToSkip(fileRef, skipPaths)){
-                            if(isVerbose){
-                                console.log('skip'.grey, fileRef, '');
-                            }
-                            reject(fileRef);
-                        } else {
-                            resolve(fileRef);
-                        }
-                    });
-                    
-                })
-                .error(next) // fire 'next' if extension is not correct
-                .then(readJSFile)
-                .then(buildFileReport)
-                .then(function(report){
-                    if(isVerbose){
-                        console.log('keep'.green, fileRef, new String(report.complexity).yellow);
-                    }
-                    reportList.push(report);
-                })
-                .caught(function(err){
-                    if(!errorsList) errorsList = [];
-                    errorsList.push({ref : fileRef, error : err });
-                    next();
-                })
-                .finally(next);
-            
-        }
-
-        return populate;
-
-    }
-
-    /**
-     * builds a complexity report of .js files 
-     * found in a file tree from a given path
-     *
-     *   returns a Promise
-     *   rejects promise if any runtime error occurs
-     */
-    function scan(path, skippedDirectories, isVerbose){
-
-        var 
-            reportList = [],
-            errorsList = null,
-            resolver = Promise.defer(),
-            isVerbose = isVerbose || false,
-            skipped = skippedDirectories || []
-        ;
-
-        var walker = walk.walk(path || './');
-    
-        walker
-            .on("file", populateReportList(errorsList, reportList, skipped, isVerbose))
-            .on("error", function(){ resolver.reject('runtime error'); })
-            .on("end", function(){
-                resolver.resolve({
-                    report : reportList,
-                    errors : errorsList
-                });
-            })
-        ;
-
-        return resolver.promise;
-
-    }
-
-    module.exports = scan;
+module.exports = scan;

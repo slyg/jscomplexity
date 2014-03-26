@@ -1,7 +1,6 @@
-module.exports = function(srcDir, options){
+module.exports = function(srcDir, skippedDirectories, isVerbose, callback){
 
-    var crawlComplexity = require('./src/crawl-complexity');
-
-    return crawlComplexity(srcDir);
+    var scanner = require('./src/scan');
+    return scanner(srcDir, skippedDirectories, isVerbose).nodeify(callback);
     
 }
