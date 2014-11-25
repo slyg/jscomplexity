@@ -11,17 +11,17 @@ var Promise = require('bluebird'),
 module.exports = function(pathsToSkip){
 
   var skippedRegExps = _.map(pathsToSkip, function(path){
-    return new RegExp(path, 'g'); 
+    return new RegExp(path, 'g');
   });
 
   /**
-   * Checks file extension and path, 
+   * Checks file extension and path,
    * fulfills if ok, reject if not.
-   * 
+   *
    * @param {String} 'fileRef'
    * @returns {Promise} fulfilled promise returns true
    */
-   
+
   this.isValidFile = function(fileRef){
 
     return new Promise(function(resolve, reject){
@@ -31,7 +31,11 @@ module.exports = function(pathsToSkip){
             return fileRef.match(skipRegex);
           });
 
-      (isJavascriptFile && hasValidPath) ? resolve(true) : reject(new Error('not a valid file'));
+      if (isJavascriptFile && hasValidPath) {
+        return resolve(true);
+      }
+
+      return reject(new Error('not a valid file'));
 
     });
 

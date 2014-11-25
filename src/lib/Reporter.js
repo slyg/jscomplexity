@@ -1,4 +1,4 @@
-var Promise = require('bluebird')
+var Promise = require('bluebird'),
     fs = require('fs'),
     readFile = Promise.promisify(fs.readFile, fs);
 
@@ -7,21 +7,21 @@ var PathFilter = require('./PathFilter'),
 
 /**
  * Reporter contructor
- * 
+ *
  * @public
  * @param {Array} 'skipPaths'     The paths pattern to skip from report
  * @param {Boolean} 'isVerbose'   The verbose mode, ouput info on each added item
  * @returns {Object} returns a Reporter instance
  */
 
-function Reporter(skipPaths, isVerbose){ 
+function Reporter(skipPathsParam, isVerboseParam){
 
-  var 
+  var
     reportList = [],
     failsList = [],
     resolver = Promise.defer(),
-    isVerbose = isVerbose || false,
-    skipPaths = skipPaths || []
+    isVerbose = isVerboseParam || false,
+    skipPaths = skipPathsParam || []
   ;
 
   /**
@@ -49,19 +49,19 @@ function Reporter(skipPaths, isVerbose){
         return createFileReport(fileRef, data);
       })
       .then(function(report){
-        if(isVerbose){ console.log('%s | %s', report.complexity, fileRef); }
+        if (isVerbose) { console.log('%s | %s', report.complexity, fileRef); }
         reportList.push(report);
       })
       .caught(function(err){
         failsList.push({ref : fileRef, message : err.message });
       })
       .finally(next);
-      
+
   };
 
   /**
    * Returns report
-   * 
+   *
    * @returns {Object} The report object
    */
 
