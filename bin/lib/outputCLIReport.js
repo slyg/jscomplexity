@@ -1,4 +1,4 @@
-var 
+var
   Table = require('cli-table'),
   _ = require('lodash')
 ;
@@ -12,9 +12,11 @@ module.exports = function logReport(report){
     style : {compact : true}
   });
 
-  _.forEach(report, function(item){
-    table.push([item.path, item.complexity]);
-  });
+  _.chain(report)
+    .sortBy('complexity').reverse()
+    .each(function(item){
+      table.push([item.path, item.complexity]);
+    });
 
   console.log(table.toString());
 
