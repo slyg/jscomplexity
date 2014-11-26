@@ -7,7 +7,7 @@ grunt.loadNpmTasks('grunt-exec');
 grunt.initConfig({
 
   jshint: {
-    all : ['src/**/*.js', 'test/*.js']
+    all : ['src/**/*.js', 'test/*.js', 'bin/**/*.js']
   },
 
   exec : {
@@ -17,7 +17,7 @@ grunt.initConfig({
       stderr: false
     }
   },
-    
+
   coverage: {
     options: {
       thresholds: {
