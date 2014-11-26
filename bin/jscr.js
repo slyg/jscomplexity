@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var 
+var
   path = require('path'),
   Promise = require('bluebird'),
 
@@ -10,16 +10,30 @@ var
   outputCLIReport = require('./lib/outputCLIReport')
 ;
 
-getSpec(function(path, skipped, isVerbose, outPutFileName){
+getSpec(function(path, skipped, isVerbose, outPutFileName, reporter){
 
   scan(path, skipped, isVerbose)
 
     .then(function(data){
-      var report = data.report;
-      return Promise.join(
-        outputHTMLReport(report, outPutFileName), 
-        outputCLIReport(report)
-      );
+
+      var report = data.report,
+          jobs = [];
+
+      switch (reporter){
+        case 'html' :
+          jobs.push(outputHTMLReport(report, outPutFileName));
+          break;
+        case 'terminal' :
+          jobs.push(outputCLIReport(report));
+          break;
+        default :
+          jobs.push(outputHTMLReport(report, outPutFileName));
+          jobs.push(outputCLIReport(report));
+          break;
+      }
+
+      return Promise.all(jobs);
+
     })
 
     .then(function(){
