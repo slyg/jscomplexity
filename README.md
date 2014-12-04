@@ -55,3 +55,6 @@ Usage: jscr [options]
 
 ![alt tag](https://raw.github.com/slyg/jscomplexity/master/images/screenshot-webUI.png)
 
+### Grunt task
+
+See [grunt-jscomplexity-threshold](https://github.com/slyg/grunt-jscomplexity-threshold) module.
