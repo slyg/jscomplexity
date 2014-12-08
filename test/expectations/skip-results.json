@@ -1,0 +1,25 @@
+{
+  "report":
+   [ { "path": "test/fixture/complex/empty.js",
+       "escapedPath": "test/fixture/complex/empty.js",
+       "complexity": 1,
+       "lineNumber": 0,
+       "maintainability": 0,
+       "halstead": { "length": 0, "vocabulary": 0, "difficulty": 0, "bugs": 0 }
+    }
+    ],
+  "fails": [
+    {
+      "ref": "test/fixture/complex/stuff",
+      "message": "not a valid file"
+    },
+    {
+      "ref": "test/fixture/complex/jquery/jquery-2.0.3.js",
+      "message": "not a valid file"
+    },
+    {
+      "ref": "test/fixture/complex/jquery/min/jquery-2.0.3.min.js",
+      "message": "not a valid file"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "report" : [
+    {
+      "path": "test/fixture/complex/empty.js",
+      "escapedPath": "test/fixture/complex/empty.js",
+      "complexity": 1,
+      "lineNumber": 0,
+      "maintainability": 0,
+      "halstead": { "length": 0, "vocabulary": 0, "difficulty": 0, "bugs": 0 }
+    },
+    {
+      "path": "test/fixture/complex/jquery/jquery-2.0.3.js",
+      "escapedPath": "test/fixture/complex/jquery/jquery-2.0.3.js",
+      "complexity": 1468,
+      "lineNumber": 4432,
+      "maintainability": 84188538.2899597,
+      "halstead": { "length": 28743, "vocabulary": 1648, "difficulty": 274, "bugs": 102 }
+    },
+    {
+      "path": "test/fixture/complex/jquery/min/jquery-2.0.3.min.js",
+      "escapedPath": "test/fixture/complex/jquery/min/jquery-2.0.3.min.js",
+      "complexity": 1195,
+      "lineNumber": 2825,
+      "maintainability": 104949017.78561088,
+      "halstead": { "length": 28696, "vocabulary": 1262, "difficulty": 355, "bugs": 99 }
+    }
+  ],
+  "fails" : [{ "ref": "test/fixture/complex/stuff", "message": "not a valid file" }]
+}

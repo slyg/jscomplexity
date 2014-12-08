@@ -10,18 +10,18 @@ scanner = require('../index')
 chai.use chaiAsPromised
 
 
-treePath = 'test/tree'
+treePath = 'test/fixture'
 treePathWithoutJSFile = treePath + '/withoutjs'
 treePathComplex = treePath + '/complex'
 treePathCrash = '/crash'
 treePathNotExisting = '/doesntexist'
 
-expectedComplexRes = require('./complex-tree-results')
-expectedSkipRes = require('./skip-results')
+expectedComplexRes = require('./expectations/complex-tree-results')
+expectedSkipRes = require('./expectations/skip-results')
 expectedEmptyRes =
   report: []
   fails: [
-    ref: 'test/tree/withoutjs/stuff'
+    ref: 'test/fixture/withoutjs/stuff'
     message: 'not a valid file'
   ]
 
@@ -48,7 +48,7 @@ describe 'the complexity scanner promise', ->
   it 'should return the attended complex result when a skip folder path is passed', (done) ->
 
     @timeout 10000
-    expect(scanner(treePathComplex, ['/tree/complex/jquery'])).to.eventually.deep.equal(expectedSkipRes).to.be.fulfilled.and.notify done
+    expect(scanner(treePathComplex, ['/fixture/complex/jquery'])).to.eventually.deep.equal(expectedSkipRes).to.be.fulfilled.and.notify done
 
 
 
