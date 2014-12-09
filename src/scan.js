@@ -21,6 +21,7 @@ module.exports = function (pattern, globOptions){
 
   return new Promise(function (resolve, reject) {
 
+    // Sanity Checks
     if (
       !_.isString(pattern) ||
       _.isEmpty(pattern) ||
@@ -29,50 +30,44 @@ module.exports = function (pattern, globOptions){
       reject(new Error('Invalid parameter type'));
     }
 
-    globAsync(pattern, globOptions)
+    // Generate files reports promises array
+    var filesReports = globAsync(pattern, globOptions)
+      .map(function(file){
+        return reportAsync(file);
+      });
 
-      .then(function (files) {
+    // when files reports promises are fulfilled,
+    // generate a global report
+    filesReports.then(function(results){
 
-        var filesReports = [];
+        return Promise.props({
 
-        _.each(files, function(file){
-          filesReports.push(reportAsync(file));
+          report : Promise
+            .filter(results, function(result){
+              return result.success;
+            })
+            .map(function(result){
+              return result.result;
+            })
+            .then(function(results){
+              return _.chain(results).sortBy('complexity').reverse().value();
+            }),
+
+          fails : Promise
+            .filter(results, function(result){
+              return !result.success;
+            })
+            .map(function(result){
+              return result.error;
+            })
+
         });
 
-        Promise.all(filesReports)
-
-          .then(function(results){
-
-            return Promise.props({
-
-              report : Promise
-                .filter(results, function(result){
-                  return result.success;
-                })
-                .map(function(result){
-                  return result.result;
-                })
-                .then(function(results){
-                  return _.chain(results).sortBy('complexity').reverse().value();
-                }),
-
-              fails : Promise
-                .filter(results, function(result){
-                  return !result.success;
-                })
-                .map(function(result){
-                  return result.error;
-                })
-
-            });
-
-          })
-
-          .then(resolve);
-
       })
+      .then(resolve)
+      .caught(reject)
 
-      .caught(reject);
+    ;
 
   });
 
