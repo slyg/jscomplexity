@@ -12,11 +12,9 @@ module.exports = function logReport(report){
     style : {compact : true}
   });
 
-  _.chain(report)
-    .sortBy('complexity').reverse()
-    .each(function(item){
-      table.push([item.path, item.complexity]);
-    });
+  _.each(report, function(item){
+    table.push([item.path, item.complexity]);
+  });
 
   console.log(table.toString());
 

@@ -13,13 +13,13 @@ Command-line tool and module to generate a complexity report on file tree Javasc
 ###Module usage
 
 ```javascript
-var jscr = require('jscomplexity');
+var jscomplexity = require('jscomplexity');
 
-// jscr() returns a promise (using bluebird)
-jscr('/path/to/js/dir').then(console.log);
+// jscomplexity() returns a promise (using bluebird)
+jscomplexity('/path/to/js/dir').then(console.log);
 
 // you can also use CPS style
-jscr('/path/to/js/dir', function(err, result){
+jscomplexity('/path/to/js/dir', function(err, result){
   if(err) {
     return console.log(err);
   }
@@ -30,20 +30,21 @@ jscr('/path/to/js/dir', function(err, result){
 ###Command-line usage
 
 ```
-Usage: jscr [options]
+Usage: jscomplexity [options]
 
   Options:
 
-    -h, --help               output usage information
-    -V, --version            output the version number
-    -t, --target <folder>    change root folder to analyse - default is current directory
-    -s, --skip <pattern>     skip path pattern during tree walk - matched items will be skipped from report
-    -o, --output <filename>  customize html report filename - default is 'jscr-report.html'
-    -v, --verbose            outputs analysisis logs
+    -h, --help                 output usage information
+    -V, --version              output the version number
+    -p, --pattern <pattern>    glob pattern - default is current directory
+    -o, --output <filename>    (optional) customize html report filename - default is 'jscomplexity-report.html'
+    -r, --reporter <reporter>  (optional) specify a reporter: 'terminal', 'html' or 'all' - default is 'all'
+    -v, --verbose              (optional) outputs analysisis logs
 ```
 
 :warning: Linux/OSX compliant only (I haven't tested it on Windows).
 
+Example : `jscomplexity -p '{./src/*.js,./src/**/*.js}'`
 
 ### Sample outputs (gremlins.js)
 

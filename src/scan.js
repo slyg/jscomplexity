@@ -1,36 +1,54 @@
-var walk = require('walk'),
-    Promise = require('bluebird'),
-    path = require('path');
+/*jshint -W079 */
+var Promise = require('bluebird'),
+    _ = require('lodash'),
+    glob = require('glob'),
+    globAsync = Promise.promisify(glob),
+    path = require('path')
+;
 
-var Reporter = require('./lib/Reporter');
+var Analyser = require('./lib/analyser');
 
 /**
- * Scan a file tree seeking for js files and generates a complexity report 
+ * Scan a file tree seeking for js files and generates a complexity report
  *
  * @public
- * @param {String}  'path'                The filetree root directory
- * @param {Array}   'skippedDirectories'  The paths patterns to be skipped during walk
+ * @param {String}  'pattern'             The glob pattern
+ * @param {Array}   'globOptions'         The glob options
  * @param {Boolean} 'isVerbose'           The log stdout option
  * @returns {Promise}                     The fulfilled promise returns the final report
  */
 
-module.exports = function (rootPath, skippedDirectories, isVerbose){
+module.exports = function (pattern, globOptions, isVerbose){
 
-  var resolver = Promise.defer(),
-      walker = walk.walk(rootPath || './'),
-      reporter = new Reporter(skippedDirectories ? skippedDirectories : [], isVerbose ? isVerbose : false);
+  return new Promise(function (resolve, reject) {
 
-  walker
-    .on("file",  function(root, fileStats, next){
+    if (
+      !_.isString(pattern) ||
+      _.isEmpty(pattern) ||
+      (globOptions && !_.isPlainObject(globOptions))
+    ){
+      reject(new Error('Invalid parameter type'));
+    }
 
-      var fileRef = path.normalize(root + '/' + fileStats.name);
-      return reporter.populate(fileRef, next);
+    globAsync(pattern, globOptions)
 
-    })
-    .on("error", function(){ return resolver.reject('runtime error'); })
-    .on("end",   function(){ return resolver.resolve( reporter.getResults() ); })
-  ;
+      .then(function (files) {
 
-  return resolver.promise;
+        var reporter = new Analyser(isVerbose ? isVerbose : false),
+            filesReports = [];
+
+        _.each(files, function(file){
+          filesReports.push(reporter.analyse(file));
+        });
+
+        Promise.all(filesReports).then(function(){
+          resolve(reporter.getResults());
+        });
+
+      })
+
+      .caught(reject);
+
+  });
 
 };

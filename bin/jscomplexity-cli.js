@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-
+/*jshint -W079 */
 var
-  path = require('path'),
   Promise = require('bluebird'),
 
   scan = require('../index'),
@@ -10,9 +9,9 @@ var
   outputCLIReport = require('./lib/outputCLIReport')
 ;
 
-getSpec(function(path, skipped, isVerbose, outPutFileName, reporter){
+getSpec(function(pattern, globOptions, isVerbose, outPutFileName, reporter){
 
-  scan(path, skipped, isVerbose)
+  scan(pattern, globOptions, isVerbose)
 
     .then(function(data){
 

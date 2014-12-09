@@ -1,3 +1,4 @@
+/*jshint -W079 */
 var
   fs = require('fs'),
   Promise = require('bluebird'),

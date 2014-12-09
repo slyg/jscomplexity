@@ -1,54 +1,53 @@
 #global describe:true, it:false, beforeEach:false
-
 #jshint -W030
+
 chai = require('chai')
 chaiAsPromised = require('chai-as-promised')
-expect = chai.expect
+should = chai.should()
 Promise = require('bluebird')
 scanner = require('../index')
 
 chai.use chaiAsPromised
 
+TREE_WITHOUT_JS_FILE = 'test/fixture/withoutjs/*.js'
+TREE_WITH_COMPLEX_FILES = 'test/fixture/complex/**/*.js'
 
-treePath = 'test/fixture'
-treePathWithoutJSFile = treePath + '/withoutjs'
-treePathComplex = treePath + '/complex'
-treePathCrash = '/crash'
-treePathNotExisting = '/doesntexist'
-
-expectedComplexRes = require('./expectations/complex-tree-results')
-expectedSkipRes = require('./expectations/skip-results')
-expectedEmptyRes =
+EXPECTED_COMPLEX_FILES_REPORT = require('./expectations/complex-tree-results')
+EXPECTED_NO_JS_FILE_REPORT =
   report: []
-  fails: [
-    ref: 'test/fixture/withoutjs/stuff'
-    message: 'not a valid file'
-  ]
+  fails: []
 
 
 describe 'the complexity scanner', ->
 
   it 'should return a Promise', ->
-    expect(scanner(treePath)).to.be.an.instanceof Promise
 
+    scanner('/*js').should.be.an.instanceof Promise
 
-describe 'the complexity scanner promise', ->
+  it 'should be rejected if (glob\'s) arguments <String:pattern> and <Object:options> are not valid', ->
+
+    scanner().should.be.rejected
+    scanner([]).should.be.rejected
+    scanner('').should.be.rejected
+    scanner('/*.js', []).should.be.rejected
+
 
   it 'should return an empty array when targeted folder doesn\'t contain .js files', (done) ->
 
-    expect(scanner(treePathWithoutJSFile)).to.be.fulfilled.and.to.eventually.deep.equal(expectedEmptyRes).and.notify done
+    scanner(TREE_WITHOUT_JS_FILE)
+      .should.be.fulfilled
+      .and.eventually.deep.equal(EXPECTED_NO_JS_FILE_REPORT)
+      .and.notify done
 
 
-  it 'should return the attended complex result', (done) ->
-
-    @timeout 10000
-    expect(scanner(treePathComplex)).to.eventually.deep.equal(expectedComplexRes).to.be.fulfilled.and.notify done
-
-
-  it 'should return the attended complex result when a skip folder path is passed', (done) ->
+  it 'should return the expected complex result', (done) ->
 
     @timeout 10000
-    expect(scanner(treePathComplex, ['/fixture/complex/jquery'])).to.eventually.deep.equal(expectedSkipRes).to.be.fulfilled.and.notify done
+    scanner(TREE_WITH_COMPLEX_FILES)
+      .should.be.fulfilled
+      .and.eventually.deep.equal(EXPECTED_COMPLEX_FILES_REPORT)
+      .and.notify done
+
 
 
 

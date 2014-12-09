@@ -1,3 +1,4 @@
+/*jshint -W079 */
 var Promise = require('bluebird'),
     cr = require('escomplex'),
     treeWalker = require('escomplex-ast-moz'),
@@ -11,7 +12,7 @@ var Promise = require('bluebird'),
  * @param {String} 'fileData'   The file content stringified
  * @returns {Promise}           The fulfilled promise returns the report {Object}
  */
- 
+
 module.exports = function(fileRef, fileData){
 
   return new Promise(function(resolve, reject){
@@ -39,5 +40,5 @@ module.exports = function(fileRef, fileData){
     });
 
   });
-    
+
 };
