@@ -6,7 +6,7 @@ var Promise = require('bluebird'),
     path = require('path')
 ;
 
-var Analyser = require('./lib/analyser');
+var reportAsync = require('./lib/report');
 
 /**
  * Scan a file tree seeking for js files and generates a complexity report
@@ -34,11 +34,10 @@ module.exports = function (pattern, globOptions, isVerbose){
 
       .then(function (files) {
 
-        var analyser = new Analyser(isVerbose ? isVerbose : false),
-            filesReports = [];
+        var filesReports = [];
 
         _.each(files, function(file){
-          filesReports.push(analyser.analyse(file));
+          filesReports.push(reportAsync(file, isVerbose ? isVerbose : false));
         });
 
         Promise.all(filesReports)
