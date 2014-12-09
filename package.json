@@ -40,7 +40,6 @@
   },
   "scripts": {
     "test": "mocha --compilers coffee:coffee-script/register",
-    "test-watch": "mocha -w --compilers coffee:coffee-script/register",
-    "istanbul": "istanbul cover _mocha -w --compilers coffee:coffee-script/register"
+    "test-watch": "mocha -w --compilers coffee:coffee-script/register"
   }
 }
