@@ -14,11 +14,10 @@ var reportAsync = require('./lib/report');
  * @public
  * @param {String}  'pattern'             The glob pattern
  * @param {Array}   'globOptions'         The glob options
- * @param {Boolean} 'isVerbose'           The log stdout option
  * @returns {Promise}                     The fulfilled promise returns the final report
  */
 
-module.exports = function (pattern, globOptions, isVerbose){
+module.exports = function (pattern, globOptions){
 
   return new Promise(function (resolve, reject) {
 
@@ -37,7 +36,7 @@ module.exports = function (pattern, globOptions, isVerbose){
         var filesReports = [];
 
         _.each(files, function(file){
-          filesReports.push(reportAsync(file, isVerbose ? isVerbose : false));
+          filesReports.push(reportAsync(file));
         });
 
         Promise.all(filesReports)

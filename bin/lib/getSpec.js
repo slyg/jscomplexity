@@ -25,12 +25,8 @@ program
     '-r, --reporter <reporter>',
     '(optional) specify a reporter: \'terminal\', \'html\' or \'all\' - default is \'terminal\''
   )
-  .option('-v, --verbose', '(optional) outputs analysisis logs')
   .parse(process.argv);
 
-if(program.verbose) {
-  options.isVerbose = true;
-}
 if(program.pattern){
   options.pattern = program.pattern;
 }
@@ -45,7 +41,6 @@ module.exports = function getSpec(callback){
   return callback(
     options.pattern,
     {},
-    options.isVerbose,
     options.outputFileName,
     options.reporter
   );

@@ -9,9 +9,9 @@ var
   outputCLIReport = require('./lib/outputCLIReport')
 ;
 
-getSpec(function(pattern, globOptions, isVerbose, outPutFileName, reporter){
+getSpec(function(pattern, globOptions, outPutFileName, reporter){
 
-  scan(pattern, globOptions, isVerbose)
+  scan(pattern, globOptions)
 
     .then(function(data){
 

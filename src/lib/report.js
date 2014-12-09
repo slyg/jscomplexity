@@ -14,7 +14,7 @@ var analyse = require('./analyse');
  * @returns {Promise}           The promise shall always be fulfilled
  */
 
-module.exports = function report (fileRef, isVerbose) {
+module.exports = function report (fileRef) {
 
   return readFileAsync(fileRef, 'utf8')
 
@@ -22,16 +22,12 @@ module.exports = function report (fileRef, isVerbose) {
 
     .then(function(result){
 
-      if (this.isVerbose) {
-        console.log('%s | %s', result.complexity, fileRef);
-      }
-
       return {
         success : true,
         result : result
       };
 
-    }.bind(this))
+    })
 
     .caught(function(err){
 
