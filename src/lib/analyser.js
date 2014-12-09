@@ -17,20 +17,14 @@ var createFileReport = require('./createFileReport');
 
 function Analyser(isVerboseParam){
 
-  var
-    resolver = Promise.defer(),
-    isVerbose = isVerboseParam || false
-  ;
-
-  this.reportList = [];
-  this.failsList = [];
+  this.isVerbose = isVerboseParam || false;
 
   /**
    * Populates report with informations about one file
    *
    * @param {String} 'root'       The file folder's path
    * @param {Object} 'fileStats'  The informations about current file
-   * @returns {Promise}           The promise shall always fulfill
+   * @returns {Promise}           The promise shall always be fulfilled
    */
 
   this.analyse = function (fileRef) {
@@ -40,32 +34,28 @@ function Analyser(isVerboseParam){
       .then(function(){
         return readFileAsync(fileRef, 'utf8');
       })
+
       .then(function(data){
         return createFileReport(fileRef, data);
       })
-      .then(function(report){
-        if (isVerbose) {
-          console.log('%s | %s', report.complexity, fileRef);
+
+      .then(function(result){
+        if (this.isVerbose) {
+          console.log('%s | %s', result.complexity, fileRef);
         }
-        this.reportList.push(report);
+        return {
+          success : true,
+          result : result
+        };
       }.bind(this))
+
       .caught(function(err){
-        this.failsList.push({ref : fileRef, message : err.message });
-      }.bind(this));
+        return {
+          success : false,
+          error : err
+        };
+      });
 
-  };
-
-  /**
-   * Returns report
-   *
-   * @returns {Object} The report object
-   */
-
-  this.getResults = function(){
-    return {
-      report : _.chain(this.reportList).sortBy('complexity').reverse().value(),
-      fails : this.failsList
-    };
   };
 
 }

@@ -7,15 +7,24 @@ var pjson = require('../../package.json'),
       pattern : './**',
       isVerbose : false,
       outputFileName : 'jscomplexity-report.html',
-      reporter : 'all'
+      reporter : 'terminal'
     };
 
 program
   .version(pjson.version)
   .usage('[options]')
-  .option('-p, --pattern <pattern>', 'glob pattern - default is current directory')
-  .option('-o, --output <filename>', '(optional) customize html report filename - default is \''+ options.outputFileName +'\'')
-  .option('-r, --reporter <reporter>', '(optional) specify a reporter: \'terminal\', \'html\' or \'all\'  - default is \'all\'')
+  .option(
+    '-p, --pattern <pattern>',
+    'glob pattern - default is current directory'
+  )
+  .option(
+    '-o, --output <filename>',
+    '(optional) customize html report filename - default is \''+ options.outputFileName +'\''
+  )
+  .option(
+    '-r, --reporter <reporter>',
+    '(optional) specify a reporter: \'terminal\', \'html\' or \'all\' - default is \'terminal\''
+  )
   .option('-v, --verbose', '(optional) outputs analysisis logs')
   .parse(process.argv);
 

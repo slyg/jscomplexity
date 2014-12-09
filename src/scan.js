@@ -34,16 +34,43 @@ module.exports = function (pattern, globOptions, isVerbose){
 
       .then(function (files) {
 
-        var reporter = new Analyser(isVerbose ? isVerbose : false),
+        var analyser = new Analyser(isVerbose ? isVerbose : false),
             filesReports = [];
 
         _.each(files, function(file){
-          filesReports.push(reporter.analyse(file));
+          filesReports.push(analyser.analyse(file));
         });
 
-        Promise.all(filesReports).then(function(){
-          resolve(reporter.getResults());
-        });
+        Promise.all(filesReports)
+
+          .then(function(results){
+
+            return Promise.props({
+
+              report : Promise
+                .filter(results, function(result){
+                  return result.success;
+                })
+                .map(function(result){
+                  return result.result;
+                })
+                .then(function(results){
+                  return _.chain(results).sortBy('complexity').reverse().value();
+                }),
+
+              fails : Promise
+                .filter(results, function(result){
+                  return !result.success;
+                })
+                .map(function(result){
+                  return result.error;
+                })
+
+            });
+
+          })
+
+          .then(resolve);
 
       })
 

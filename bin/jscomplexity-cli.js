@@ -45,4 +45,3 @@ getSpec(function(pattern, globOptions, isVerbose, outPutFileName, reporter){
     });
 
 });
-
