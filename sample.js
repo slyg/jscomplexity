@@ -1,9 +1,9 @@
-var jscr = require('./index');
+var jscomplexity = require('./index');
 var util = require('util');
 
 // Promise-style
 
-jscr('./src').then(function(data){
+jscomplexity('./src/**').then(function(data){
 
   console.log(JSON.stringify(data.report, null, 6));
 
@@ -13,13 +13,13 @@ jscr('./src').then(function(data){
 /**
  * Node-style version :
  *
- * jscr('./src', function(err, data){
+ * jscomplexity('./src/**', function(err, data){
  *
  * if(err){
  *   return console.log(err);
  * }
- * 
+ *
  * console.log(JSON.stringify(data.report, null, 6));
- * 
+ *
  * });
  */
