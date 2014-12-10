@@ -26,7 +26,7 @@ module.exports = function scan(pattern, globOptions, callback){
     _.isEmpty(pattern) ||
     (globOptions && !_.isPlainObject(globOptions))
   ){
-    return Promise.reject(new Error('Invalid parameter type'));
+    return Promise.reject(new Error('Invalid parameter type')).nodeify(callback);
   }
 
   // Generate files reports promises array
