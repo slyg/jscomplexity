@@ -20,55 +20,47 @@ var reportAsync = require('./report');
 
 module.exports = function scan(pattern, globOptions, callback){
 
-  return new Promise(function (resolve, reject) {
+  // Sanity Checks
+  if (
+    !_.isString(pattern) ||
+    _.isEmpty(pattern) ||
+    (globOptions && !_.isPlainObject(globOptions))
+  ){
+    return Promise.reject(new Error('Invalid parameter type'));
+  }
 
-    // Sanity Checks
-    if (
-      !_.isString(pattern) ||
-      _.isEmpty(pattern) ||
-      (globOptions && !_.isPlainObject(globOptions))
-    ){
-      reject(new Error('Invalid parameter type'));
-    }
+  // Generate files reports promises array
+  var filesReports = globAsync(pattern, globOptions)
+    .map(function(file){
+      return reportAsync(file);
+    });
 
-    // Generate files reports promises array
-    var filesReports = globAsync(pattern, globOptions)
-      .map(function(file){
-        return reportAsync(file);
-      });
+  // when files reports promises are fulfilled,
+  // generate a global report
+  return filesReports.then(function(results){
 
-    // when files reports promises are fulfilled,
-    // generate a global report
-    filesReports.then(function(results){
+    return Promise.props({
 
-        return Promise.props({
+      report : Promise
+        .filter(results, function(result){
+          return result.success;
+        })
+        .map(function(result){
+          return result.result;
+        })
+        .then(function(results){
+          return _.chain(results).sortBy('complexity').reverse().value();
+        }),
 
-          report : Promise
-            .filter(results, function(result){
-              return result.success;
-            })
-            .map(function(result){
-              return result.result;
-            })
-            .then(function(results){
-              return _.chain(results).sortBy('complexity').reverse().value();
-            }),
+      fails : Promise
+        .filter(results, function(result){
+          return !result.success;
+        })
+        .map(function(result){
+          return result.error;
+        })
 
-          fails : Promise
-            .filter(results, function(result){
-              return !result.success;
-            })
-            .map(function(result){
-              return result.error;
-            })
-
-        });
-
-      })
-      .then(resolve)
-      .caught(reject)
-
-    ;
+    });
 
   }).nodeify(callback);
 
