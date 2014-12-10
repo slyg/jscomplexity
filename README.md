@@ -16,10 +16,10 @@ Command-line tool and module to generate a complexity report on file tree Javasc
 var jscomplexity = require('jscomplexity');
 
 // jscomplexity() returns a promise (using bluebird)
-jscomplexity('/path/to/js/dir').then(console.log);
+jscomplexity('/glob/pattern/to/js/*' [, globOptions]).then(console.log);
 
 // you can also use CPS style
-jscomplexity('/path/to/js/dir', function(err, result){
+jscomplexity('/glob/pattern/to/js/*', {}, function(err, result){
   if(err) {
     return console.log(err);
   }

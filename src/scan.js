@@ -6,18 +6,19 @@ var Promise = require('bluebird'),
     path = require('path')
 ;
 
-var reportAsync = require('./lib/report');
+var reportAsync = require('./report');
 
 /**
  * Scan a file tree seeking for js files and generates a complexity report
  *
  * @public
- * @param {String}  'pattern'             The glob pattern
- * @param {Array}   'globOptions'         The glob options
- * @returns {Promise}                     The fulfilled promise returns the final report
+ * @param {String}    'pattern'       The glob pattern
+ * @param {Array}     'globOptions'   The glob options
+ * @param {Function}  'callback'      cps callback function (optional)
+ * @returns {Promise}                 The fulfilled promise returns the final report
  */
 
-module.exports = function (pattern, globOptions){
+module.exports = function scan(pattern, globOptions, callback){
 
   return new Promise(function (resolve, reject) {
 
@@ -69,6 +70,6 @@ module.exports = function (pattern, globOptions){
 
     ;
 
-  });
+  }).nodeify(callback);
 
 };

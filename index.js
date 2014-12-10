@@ -1,6 +1,5 @@
-module.exports = function(srcDir, skippedDirectories, isVerbose, callback){
+var scan = require('./src/scan');
+var analyse = require('./src/analyse');
 
-    var scanner = require('./src/scan');
-    return scanner(srcDir, skippedDirectories, isVerbose).nodeify(callback);
-    
-}
+module.exports = scan;
+module.exports.analyse = analyse;
