@@ -33,7 +33,7 @@ module.exports = function analyse (fileRef){
         escapedPath     : fileRef.replace(/\\/g, '\\'), // windows use
         complexity      : report.aggregate.cyclomatic,
         lineNumber      : report.aggregate.sloc.logical,
-        maintainability : report.aggregate.halstead.effort,
+        maintainability : Math.round(report.aggregate.halstead.effort),
         halstead        : {
           length         : report.aggregate.halstead.length,
           vocabulary     : Math.round(report.aggregate.halstead.vocabulary),

@@ -5,7 +5,7 @@
       "escapedPath": "test/fixture/complex/jquery/jquery-2.0.3.js",
       "complexity": 1468,
       "lineNumber": 4432,
-      "maintainability": 84188538.2899597,
+      "maintainability": 84188538,
       "halstead": { "length": 28743, "vocabulary": 1648, "difficulty": 274, "bugs": 102 }
     },
     {
@@ -13,7 +13,7 @@
       "escapedPath": "test/fixture/complex/jquery/min/jquery-2.0.3.min.js",
       "complexity": 1195,
       "lineNumber": 2825,
-      "maintainability": 104949017.78561088,
+      "maintainability": 104949018,
       "halstead": { "length": 28696, "vocabulary": 1262, "difficulty": 355, "bugs": 99 }
     },
     {
