@@ -2,7 +2,9 @@
 
 JS cyclomatic complexity report generator.
 
-Command-line tool and module to generate a complexity report on file tree Javascript files. It is based on [escomplex](https://github.com/philbooth/escomplex/) module results. Report stands in a .html file containing graphical representation of file tree when used from command-line.
+Command-line tool and module that generates a report of Javascript files complexity. It is based on [escomplex](https://github.com/philbooth/escomplex/) module's results.
+
+In 'html' mode, command-line tool will create an .html file report containing graphical representation of files complexity and lines of code count.
 
 [![Build Status](https://travis-ci.org/slyg/jscomplexity.png?branch=master)](https://travis-ci.org/slyg/jscomplexity)
 
@@ -38,13 +40,12 @@ Usage: jscomplexity [options]
     -V, --version              output the version number
     -p, --pattern <pattern>    glob pattern - default is current directory
     -o, --output <filename>    (optional) customize html report filename - default is 'jscomplexity-report.html'
-    -r, --reporter <reporter>  (optional) specify a reporter: 'terminal', 'html' or 'all' - default is 'all'
-    -v, --verbose              (optional) outputs analysisis logs
+    -r, --reporter <reporter>  (optional) specify a reporter: 'terminal', 'html' or 'all' - default is 'terminal'
 ```
 
 :warning: Linux/OSX compliant only (I haven't tested it on Windows).
 
-Example : `jscomplexity -p '{./src/*.js,./src/**/*.js}'`
+CLI Example : `jscomplexity -p '{src/*.js,src/**/*.js,!src/config/**}'`
 
 ### Sample outputs (gremlins.js)
 
