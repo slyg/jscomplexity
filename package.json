@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/slyg/jscomplexity.git"
   },
-  "version": "1.1.1",
+  "version": "2.0.0",
   "preferGlobal": "true",
   "bin": {
     "jscomplexity": "./bin/jscomplexity-cli.js"
