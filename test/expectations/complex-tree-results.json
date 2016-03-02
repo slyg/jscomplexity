@@ -4,7 +4,8 @@
       "path": "test/fixture/complex/jquery/jquery-2.0.3.js",
       "escapedPath": "test/fixture/complex/jquery/jquery-2.0.3.js",
       "complexity": 1468,
-      "lineNumber": 4432,
+      "lineCount": 4432,
+      "functionCount": 551,
       "maintainability": 84188538,
       "halstead": { "length": 28743, "vocabulary": 1648, "difficulty": 274, "bugs": 102 }
     },
@@ -12,7 +13,8 @@
       "path": "test/fixture/complex/jquery/min/jquery-2.0.3.min.js",
       "escapedPath": "test/fixture/complex/jquery/min/jquery-2.0.3.min.js",
       "complexity": 1195,
-      "lineNumber": 2825,
+      "lineCount": 2825,
+      "functionCount": 551,
       "maintainability": 104949018,
       "halstead": { "length": 28696, "vocabulary": 1262, "difficulty": 355, "bugs": 99 }
     },
@@ -20,7 +22,8 @@
       "path": "test/fixture/complex/empty.js",
       "escapedPath": "test/fixture/complex/empty.js",
       "complexity": 1,
-      "lineNumber": 0,
+      "lineCount": 0,
+      "functionCount": 0,
       "maintainability": 0,
       "halstead": { "length": 0, "vocabulary": 0, "difficulty": 0, "bugs": 0 }
     }
