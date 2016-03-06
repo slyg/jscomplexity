@@ -14,25 +14,25 @@
   },
   "main": "./index",
   "dependencies": {
-    "bluebird": "2.3.11",
+    "bluebird": "^3.3.3",
     "cli-table": "0.3.1",
-    "colors": "1.0.3",
-    "commander": "2.5.0",
+    "colors": "^1.1.2",
+    "commander": "^2.9.0",
     "complexity-report": "1.0.6",
     "escomplex": "0.2.5",
-    "escomplex-ast-moz": "0.1.5",
-    "esprima": "1.2.2",
-    "glob": "4.3.1",
-    "handlebars": "1.3.0",
-    "lodash": "2.4.1"
+    "escomplex-ast-moz": "^0.2.1",
+    "esprima": "^2.7.2",
+    "glob": "^7.0.3",
+    "handlebars": "^4.0.5",
+    "lodash": "^4.6.1"
   },
   "devDependencies": {
-    "chai": "1.10.0",
-    "chai-as-promised": "4.1.1",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^5.2.0",
     "coffee-script": "^1.8.0",
     "grunt": "0.4.5",
-    "grunt-contrib-jshint": "0.10.0",
-    "mocha": "2.0.0"
+    "grunt-contrib-jshint": "^1.0.0",
+    "mocha": "^2.4.5"
   },
   "scripts": {
     "test": "mocha --compilers coffee:coffee-script/register",
