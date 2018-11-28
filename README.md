@@ -1,4 +1,4 @@
-#JScomplexity
+# JScomplexity
 
 JS cyclomatic complexity report generator.
 
@@ -8,13 +8,13 @@ In 'html' mode, command-line tool will create an .html file report containing gr
 
 [![Build Status](https://travis-ci.org/slyg/jscomplexity.png?branch=master)](https://travis-ci.org/slyg/jscomplexity)
 
-###Installation 
+### Installation 
 
 `npm install -g jscomplexity`
 
-###Module usage
+### Module usage
 
-```javascript
+```js
 var jscomplexity = require('jscomplexity');
 
 // jscomplexity() returns a promise (using bluebird)
@@ -29,7 +29,7 @@ jscomplexity('/glob/pattern/to/js/*', {}, function(err, result){
 });
 ```
 
-###Command-line usage
+### Command-line usage
 
 ```
 Usage: jscomplexity [options]
